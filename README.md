@@ -1,18 +1,18 @@
-#Sistema de Gestión de Ferretería - FerrePueblo
+# Sistema de Gestión de Ferretería - FerrePueblo
 
 Sistema completo de gestión para ferretería desarrollado con **Spring Boot** (backend), **Angular** (frontend) y **MySQL**, diseñado para administrar inventario, ventas, compras, proveedores y clientes de manera eficiente y escalable.
 
 ---
 
-##Características
+##  Características
 
-###Módulo de Administración
+###  Módulo de Administración
 - **Gestión de Productos**: CRUD completo con control de stock, precios de compra/venta y estado (activo/inactivo)
 - **Control de Proveedores**: Registro, búsqueda por RUC y gestión de datos de proveedores
 - **Administración de Clientes**: Gestión completa con búsqueda por código y registro rápido
 - **Dashboard Administrativo**: Panel con estadísticas, gráficos de ventas y stock crítico
 
-###Módulo de Ventas
+###  Módulo de Ventas
 - **Registro de Ventas**: Interfaz intuitiva con búsqueda de clientes y productos
 - **Carrito de Compras**: Agregar productos con cantidades y cálculo automático de totales
 - **Múltiples métodos de pago**: Efectivo, Tarjeta, Transferencia, Yape
@@ -20,12 +20,12 @@ Sistema completo de gestión para ferretería desarrollado con **Spring Boot** (
 - **Devoluciones**: Sistema completo de cambios y reembolsos con ajuste automático de stock
 - **Historial de Ventas**: Visualización detallada con filtros
 
-###Módulo de Compras
+###  Módulo de Compras
 - **Solicitudes de Compra**: Creación, aprobación y rechazo de solicitudes
 - **Registro de Entregas**: Recepción de productos con actualización automática de stock
 - **Control de Inventario**: Actualización en tiempo real de stock al recibir mercancía
 
-###Sistema de Seguridad
+###  Sistema de Seguridad
 - **Autenticación de Usuarios**: Login con roles y permisos
 - **Control de Acceso por Rol**:
   - **ADMINISTRADOR**: Acceso total al sistema
@@ -34,7 +34,7 @@ Sistema completo de gestión para ferretería desarrollado con **Spring Boot** (
   - **ASISTENTE_COMPRA**: Gestión de compras y proveedores
   - **ALMACENERO**: Visualización de inventario y compras
 
-###Funcionalidades Técnicas
+###  Funcionalidades Técnicas
 - **Actualización Automática de Stock**: Al realizar ventas, devoluciones o compras
 - **Validación de Stock**: Control para evitar ventas sin inventario suficiente
 - **Cálculo Automático de Totales**: Subtotal, IGV (18%) y total
@@ -42,9 +42,9 @@ Sistema completo de gestión para ferretería desarrollado con **Spring Boot** (
 
 ---
 
-##Tecnologías
+##  Tecnologías
 
-###Backend
+### Backend
 - **Spring Boot 3.x**: Framework principal
 - **Spring Data JPA**: ORM para persistencia de datos
 - **Spring Web**: API RESTful
@@ -52,7 +52,7 @@ Sistema completo de gestión para ferretería desarrollado con **Spring Boot** (
 - **Lombok**: Reducción de código boilerplate
 - **Maven**: Gestión de dependencias
 
-###Frontend
+### Frontend
 - **Angular 17+**: Framework para SPA
 - **TypeScript**: Tipado estático
 - **Bootstrap 5**: Estilos y componentes UI
@@ -60,13 +60,13 @@ Sistema completo de gestión para ferretería desarrollado con **Spring Boot** (
 - **RxJS**: Programación reactiva
 - **HTTP Client**: Comunicación con API REST
 
-###Base de Datos
+### Base de Datos
 - **MySQL 8+**: Sistema gestor de base de datos
 - **13 Tablas Relacionadas**: Usuario, Cliente, Proveedor, Producto, Venta, DetalleVenta, Devolución, DetalleDevolución, SolicitudCompra, DetalleSolicitudCompra, GuíaEntrada, DetalleGuíaEntrada, TipoPago
 
-##Instalación y Ejecución
+##  Instalación y Ejecución
 
-###Requisitos Previos
+### Requisitos Previos
 - **Java 17+** (Backend)
 - **Node.js 18+** (Frontend)
 - **MySQL 8+** (Base de Datos)
