@@ -1,0 +1,110 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h1 class="h4 mb-0">
+                <i class="fa-solid fa-file-signature me-2" aria-hidden="true"></i>
+                Orden de Compra <span *ngIf="orden">N° {{ orden.idOrdenCompra }}</span>
+            </h1>
+        </div>
+
+        <div class="card-body">
+
+            <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+            <div *ngIf="mensaje" class="alert alert-success" role="status">{{ mensaje }}</div>
+
+            <ng-container *ngIf="orden">
+
+                <dl class="row">
+                    <dt class="col-sm-3">Estado</dt>
+                    <dd class="col-sm-9">
+                        <span class="badge"
+                              [ngClass]="{
+                                'bg-warning text-dark': orden.estado === 'PENDIENTE',
+                                'bg-success': orden.estado === 'APROBADA',
+                                'bg-danger': orden.estado === 'RECHAZADA',
+                                'bg-secondary': orden.estado === 'ENTREGADA'
+                              }">{{ orden.estado }}</span>
+                    </dd>
+
+                    <dt class="col-sm-3">Fecha de la orden</dt>
+                    <dd class="col-sm-9">{{ orden.fechaOrden | date:'dd/MM/yyyy' }}</dd>
+
+                    <dt class="col-sm-3">Proveedor</dt>
+                    <dd class="col-sm-9">{{ orden.proveedor.nombreProveedor }} (RUC {{ orden.proveedor.ruc }})</dd>
+
+                    <dt class="col-sm-3">Cotización</dt>
+                    <dd class="col-sm-9">
+                        N° {{ orden.cotizacion.idCotizacion }} del {{ orden.cotizacion.fechaCotizacion | date:'dd/MM/yyyy' }},
+                        vigente hasta {{ orden.cotizacion.fechaVigencia | date:'dd/MM/yyyy' }}
+                    </dd>
+
+                    <dt class="col-sm-3">Creada por</dt>
+                    <dd class="col-sm-9">{{ orden.usuarioCreador.nombres }} {{ orden.usuarioCreador.apellidos }}</dd>
+
+                    <ng-container *ngIf="orden.usuarioAprobador">
+                        <dt class="col-sm-3">{{ orden.estado === 'RECHAZADA' ? 'Rechazada por' : 'Aprobada por' }}</dt>
+                        <dd class="col-sm-9">
+                            {{ orden.usuarioAprobador.nombres }} {{ orden.usuarioAprobador.apellidos }}
+                            ({{ orden.usuarioAprobador.rol }}) el {{ orden.fechaAprobacion | date:'dd/MM/yyyy HH:mm' }}
+                        </dd>
+                    </ng-container>
+                </dl>
+
+                <h2 class="h5 fw-bold">Productos</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <caption class="visually-hidden">Productos de la orden</caption>
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">Código</th>
+                                <th scope="col">Producto</th>
+                                <th scope="col" class="text-end">Cantidad</th>
+                                <th scope="col" class="text-end">Precio unitario</th>
+                                <th scope="col" class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let d of orden.cotizacion.detalleCotizacion">
+                                <td>{{ d.producto.codigo }}</td>
+                                <td>{{ d.producto.nombre }}</td>
+                                <td class="text-end">{{ d.cantidad }}</td>
+                                <td class="text-end">S/. {{ d.precioUnitario | number:'1.2-2' }}</td>
+                                <td class="text-end">S/. {{ d.subtotal | number:'1.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="row" colspan="4" class="text-end">Total</th>
+                                <td class="text-end fw-bold">S/. {{ orden.montoTotal | number:'1.2-2' }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </ng-container>
+
+            <div class="d-flex justify-content-end gap-3 mt-4">
+                <ng-container *ngIf="orden?.estado === 'PENDIENTE' && tienePermiso('aprobar_ordenes')">
+                    <button type="button" class="btn btn-success btn-lg px-4" (click)="aprobar()" [disabled]="procesando">
+                        <i class="fa-solid fa-check me-2" aria-hidden="true"></i> Aprobar orden
+                    </button>
+                    <button type="button" class="btn btn-danger btn-lg px-4" (click)="rechazar()" [disabled]="procesando">
+                        <i class="fa-solid fa-xmark me-2" aria-hidden="true"></i> Rechazar orden
+                    </button>
+                </ng-container>
+                <button *ngIf="orden?.estado === 'APROBADA' && tienePermiso('registrar_entregas')"
+                        type="button" class="btn btn-primary btn-lg px-4" (click)="registrarEntrega()">
+                    <i class="fa-solid fa-truck me-2" aria-hidden="true"></i> Registrar entrega
+                </button>
+                <button type="button" class="btn btn-secondary btn-lg px-4" (click)="volver()">
+                    <i class="fa-solid fa-arrow-left me-2" aria-hidden="true"></i> Volver
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

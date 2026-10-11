@@ -1,0 +1,19 @@
+<!-- ✅ Usar el Observable con async -->
+<div class="modal-overlay" *ngIf="modalService.modal$ | async as modal">
+    <div class="modal-container">
+        
+        <div class="modal-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+
+        <div class="modal-title">{{ modal.titulo }}</div>
+        
+        <div class="modal-message">{{ modal.mensaje }}</div>
+        
+        <div class="modal-buttons">
+            <button class="btn-aceptar" (click)="confirmar()">Aceptar</button>
+            <button class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,310 @@
+/* ===========================
+   CONTENEDOR GENERAL
+=========================== */
+
+.nosotros{
+
+    background:#f7f9fc;
+
+    padding:70px 50px;
+}
+
+/* ===========================
+   CONTENEDOR PRINCIPAL
+=========================== */
+
+.contenedor{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:70px;
+
+    max-width:1300px;
+
+    margin:auto;
+
+    flex-wrap:wrap;
+}
+
+/* ===========================
+   IMAGEN
+=========================== */
+
+.imagen{
+
+    flex:0 0 430px;
+
+    display:flex;
+
+    justify-content:center;
+}
+
+.imagen img{
+
+    width:430px;
+
+    height:430px;
+
+    object-fit:cover;
+
+    border-radius:20px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
+
+    transition:.35s;
+}
+
+.imagen img:hover{
+
+    transform:scale(1.03);
+}
+
+/* ===========================
+   INFORMACIÓN
+=========================== */
+
+.info{
+
+    flex:1;
+
+    min-width:400px;
+}
+
+.subtitulo{
+
+    color:#005bbb;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    letter-spacing:2px;
+}
+
+.info h1{
+
+    font-size:52px;
+
+    color:#17335d;
+
+    line-height:65px;
+
+    margin:15px 0;
+}
+
+.linea{
+
+    width:90px;
+
+    height:5px;
+
+    background:#005bbb;
+
+    border-radius:20px;
+
+    margin-bottom:30px;
+}
+
+.info p{
+
+    font-size:20px;
+
+    color:#555;
+
+    line-height:35px;
+
+    margin-bottom:20px;
+}
+
+/* ===========================
+   BOTÓN
+=========================== */
+
+.info button{
+
+    margin-top:20px;
+
+    background:#005bbb;
+
+    color:white;
+
+    border:none;
+
+    padding:16px 35px;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.info button:hover{
+
+    background:#003f80;
+
+    transform:translateY(-2px);
+}
+
+.info button i{
+
+    margin-right:10px;
+}
+
+/* ===========================
+   BENEFICIOS
+=========================== */
+
+.beneficios{
+
+    max-width:1300px;
+
+    margin:80px auto 0;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+}
+
+.beneficio{
+
+    background:white;
+
+    padding:35px 25px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+
+    transition:.35s;
+}
+
+.beneficio:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.18);
+}
+
+.beneficio i{
+
+    width:80px;
+
+    height:80px;
+
+    background:#e8f1ff;
+
+    color:#005bbb;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:34px;
+
+    margin:auto;
+
+    margin-bottom:20px;
+}
+
+.beneficio h3{
+
+    color:#17335d;
+
+    font-size:22px;
+
+    margin-bottom:15px;
+}
+
+.beneficio p{
+
+    color:#666;
+
+    line-height:28px;
+
+    font-size:16px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:1100px){
+
+    .contenedor{
+
+        flex-direction:column;
+
+        text-align:center;
+    }
+
+    .imagen{
+
+        flex:unset;
+    }
+
+    .imagen img{
+
+        width:350px;
+
+        height:350px;
+    }
+
+    .info{
+
+        min-width:unset;
+    }
+
+    .linea{
+
+        margin:20px auto;
+    }
+
+    .beneficios{
+
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:700px){
+
+    .nosotros{
+
+        padding:40px 20px;
+    }
+
+    .info h1{
+
+        font-size:38px;
+
+        line-height:50px;
+    }
+
+    .info p{
+
+        font-size:18px;
+    }
+
+    .beneficios{
+
+        grid-template-columns:1fr;
+    }
+
+}

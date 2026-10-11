@@ -1,0 +1,18 @@
+# Frontend
+node_modules/
+dist/
+.angular/
+
+# Backend
+target/
+*.class
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Varios
+.env
+*.bat

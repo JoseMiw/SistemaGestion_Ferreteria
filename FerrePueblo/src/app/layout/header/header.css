@@ -1,0 +1,422 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+header{
+    width:100%;
+}
+
+/* CONTENEDOR GENERAL */
+
+.header-container{
+
+    display:flex;
+
+    width:100%;
+}
+
+/* LOGO */
+
+.logo-area{
+
+    width:18%;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    padding:5px 15px 15px 15px;
+}
+
+.logo-area img{
+
+    width:140px;
+}
+
+/* DERECHA */
+
+.right-area{
+
+    width:82%;
+
+    background:#005bbb;
+}
+
+/* PARTE SUPERIOR */
+
+.top-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-end;
+
+    gap:40px;
+
+    padding:10px 50px 0px 50px;
+}
+
+/* BUSCADOR */
+
+.search{
+
+    width:600px;
+
+    display:flex;
+}
+
+.search input{
+
+    width:100%;
+
+    padding: 22px;
+
+    border:none;
+}
+
+/* Foco visible en todos los controles del header (WCAG 2.4.7) */
+.search input:focus-visible,
+.search button:focus-visible,
+.login button:focus-visible,
+nav a:focus-visible{
+
+    outline:3px solid #ffcc00;
+
+    outline-offset:2px;
+}
+
+.search button{
+
+    padding:12px 20px;
+
+    border:none;
+
+    background:#003f80;
+
+    color:white;
+
+    cursor:pointer;
+}
+
+
+
+/* LOGIN */
+
+.login{
+
+    flex-shrink:0;
+}
+
+.login button{
+
+    padding:12px 25px;
+
+    border:none;
+
+    background:#003f80;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+/* NAVBAR */
+
+nav{
+
+    background:#003b75;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:60px;
+
+    padding:14px;
+
+    margin-top:42px;
+
+    margin-left:-343px;
+}
+
+
+
+nav a{
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:bold;
+
+    font-size:20px;
+}
+
+/* FONDO OSCURO */
+
+.overlay{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100vh;
+
+    background:rgba(0,0,0,0.45);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+}
+
+/* CAJA LOGIN */
+
+.login-modal{
+
+    width:400px;
+
+    background:rgba(255,255,255,0.92);
+
+    padding:70px 35px 35px;
+
+    border-radius:25px;
+
+    position:relative;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+}
+
+/* ICONO */
+
+.icono-user{
+
+    width:110px;
+
+    height:110px;
+
+    background:#003b75;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:55px;
+
+    position:absolute;
+
+    top:-55px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+}
+
+/* CERRAR */
+
+.cerrar{
+
+    position:absolute;
+
+    right:15px;
+
+    top:15px;
+
+    border:none;
+
+    background:none;
+
+    font-size:20px;
+
+    cursor:pointer;
+}
+
+/* INPUTS */
+
+.login-modal input{
+
+    padding:16px;
+
+    border:none;
+
+    background:#3e5f89;
+
+    color:white;
+}
+
+.login-modal input:focus-visible,
+.login-modal button:focus-visible{
+
+    outline:3px solid #ffb400;
+
+    outline-offset:2px;
+}
+
+.login-modal input[aria-invalid="true"]{
+
+    box-shadow:inset 0 0 0 2px #c62828;
+}
+
+/* TITULO Y ETIQUETAS DEL MODAL */
+
+.titulo-modal{
+
+    text-align:center;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    color:#003b75;
+
+    margin:0;
+}
+
+.login-modal label{
+
+    font-weight:bold;
+
+    color:#1f2d3d;
+
+    margin-bottom:-14px;
+}
+
+.login-modal .ayuda{
+
+    color:#333;
+
+    margin-top:-14px;
+}
+
+/* MENSAJES */
+
+.mensaje-error{
+
+    color:#b00020;
+
+    font-weight:bold;
+}
+
+.mensaje-exito{
+
+    color:#1b5e20;
+
+    font-weight:bold;
+}
+
+.mensaje-error:empty,
+.mensaje-exito:empty{
+
+    display:none;
+}
+
+.btn-login:disabled{
+
+    opacity:.7;
+
+    cursor:wait;
+}
+
+.login-modal input::placeholder{
+
+    color:#ddd;
+}
+
+/* EXTRAS */
+
+.extras{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:13px;
+}
+
+/* BOTON */
+
+.btn-login{
+
+    border:none;
+
+    padding:15px;
+
+    background:#003b75;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    border-radius:10px;
+}
+
+/* WRAPPER PARA INPUT DE CONTRASEÑA CON ÍCONO DE OJO */
+
+.password-wrapper{
+
+    position:relative;
+}
+
+.password-wrapper input{
+
+    width:100%;
+
+    padding-right:45px; /* espacio para el ícono, no tapa el texto */
+}
+
+.password-wrapper .ver-password{
+
+    position:absolute;
+
+    right:8px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    border:none;
+
+    background:none;
+
+    padding:6px 8px;
+
+    color:#ddd; /* mismo tono que tus placeholders, visible sobre el fondo azul oscuro */
+
+    cursor:pointer;
+
+    font-size:16px;
+}
+
+.password-wrapper .ver-password:hover{
+
+    color:white;
+}
+

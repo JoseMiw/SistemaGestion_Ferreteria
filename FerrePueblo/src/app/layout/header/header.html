@@ -1,0 +1,253 @@
+<header>
+
+    <div class="header-container">
+
+        <!-- LOGO -->
+        <div class="logo-area">
+
+            <img src="/img/logo.png" alt="FerrePueblo">
+
+        </div>
+
+        <!-- LADO DERECHO -->
+        <div class="right-area">
+
+            <!-- PARTE SUPERIOR -->
+            <div class="top-header">
+
+                <div class="search" role="search">
+
+                    <input
+                        type="text"
+                        placeholder="Buscar productos..."
+                        aria-label="Buscar productos"
+                        [(ngModel)]="busqueda"
+                        (ngModelChange)="buscarProducto()"
+                        (keyup.enter)="buscarProducto()">
+
+                    <button type="button" aria-label="Buscar" (click)="buscarProducto()">
+
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+
+                    </button>
+
+                </div>
+
+                <!-- En lugar del botón de login, mostrar el usuario si está logueado -->
+                <div class="login">
+                    <ng-container *ngIf="!usuarioActual; else loggedIn">
+                        <button type="button" (click)="abrirLogin()">
+                            INICIAR SESIÓN
+                        </button>
+                    </ng-container>
+                    <ng-template #loggedIn>
+                        <div class="user-info">
+                            <span class="user-name">{{ usuarioActual?.nombres }}</span>
+                            <span class="user-role">({{ usuarioActual?.rol }})</span>
+                            <button type="button" (click)="cerrarSesion()" class="btn-logout">
+                                CERRAR SESIÓN
+                            </button>
+                        </div>
+                    </ng-template>
+                </div>
+
+            </div>
+
+            <!-- MENÚ -->
+
+            <nav aria-label="Menú principal">
+
+                <a routerLink="/inicio">INICIO</a>
+
+                <a routerLink="/nosotros">NOSOTROS</a>
+
+                <a routerLink="/producto">PRODUCTOS</a>
+
+                <a routerLink="/contacto">CONTACTO</a>
+
+            </nav>
+
+        </div>
+
+    </div>
+
+    <!-- LOGIN (RF08) -->
+
+    <div class="overlay" *ngIf="mostrarLogin" (keydown.escape)="cerrarLogin()">
+
+        <form class="login-modal" role="dialog" aria-modal="true" aria-labelledby="titulo-login"
+              (ngSubmit)="validarLogin()" novalidate>
+
+            <button
+                type="button"
+                class="cerrar"
+                aria-label="Cerrar"
+                (click)="cerrarLogin()">
+
+                <span aria-hidden="true">✖</span>
+
+            </button>
+
+            <div class="icono-user" aria-hidden="true">
+
+                <i class="fa-regular fa-user"></i>
+
+            </div>
+
+            <h2 id="titulo-login" class="titulo-modal">Iniciar sesión</h2>
+
+            <label for="login-usuario">Usuario</label>
+            <input
+                #campoUsuario
+                id="login-usuario"
+                name="usuario"
+                type="text"
+                autocomplete="username"
+                [(ngModel)]="usuario"
+                [attr.aria-invalid]="errorMessage ? 'true' : null"
+                aria-describedby="login-error"
+                placeholder="Usuario">
+
+            <label for="login-password">Contraseña</label>
+            <div class="password-wrapper">
+                <input
+                    id="login-password"
+                    name="password"
+                    autocomplete="current-password"
+                    [type]="mostrarPassword ? 'text' : 'password'"
+                    [(ngModel)]="password"
+                    [attr.aria-invalid]="errorMessage ? 'true' : null"
+                    aria-describedby="login-error"
+                    placeholder="Contraseña">
+                <button
+                    type="button"
+                    class="ver-password"
+                    [attr.aria-label]="mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                    [attr.aria-pressed]="mostrarPassword"
+                    (click)="togglePassword()">
+                    <i
+                        class="fa-solid"
+                        aria-hidden="true"
+                        [class.fa-eye]="!mostrarPassword"
+                        [class.fa-eye-slash]="mostrarPassword">
+                    </i>
+                </button>
+            </div>
+
+            <div id="login-error" class="mensaje-error" role="alert" aria-live="assertive">
+                <ng-container *ngIf="errorMessage">
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> {{ errorMessage }}
+                </ng-container>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-login"
+                [disabled]="cargandoLogin">
+                {{ cargandoLogin ? 'INGRESANDO...' : 'INGRESAR' }}
+            </button>
+            <button
+                    type="button"
+                    class="btn-login"
+                    (click)="olvidoPassword()">
+                    CAMBIAR CONTRASEÑA
+            </button>
+        </form>
+
+    </div>
+
+    <!-- CAMBIAR CONTRASEÑA (RF09) -->
+
+    <div class="overlay" *ngIf="mostrarCambioPassword" (keydown.escape)="cerrarCambioPassword()">
+
+        <form class="login-modal" role="dialog" aria-modal="true" aria-labelledby="titulo-cambio"
+              (ngSubmit)="cambiarPassword()" novalidate>
+
+            <button
+                type="button"
+                class="cerrar"
+                aria-label="Cerrar"
+                (click)="cerrarCambioPassword()">
+
+                <span aria-hidden="true">✖</span>
+
+            </button>
+
+            <div class="icono-user" aria-hidden="true">
+
+                <i class="fa-solid fa-key"></i>
+
+            </div>
+
+            <h2 id="titulo-cambio" class="titulo-modal">
+
+                Cambiar Contraseña
+
+            </h2>
+
+            <label for="cambio-usuario">Usuario</label>
+            <input
+                #campoUsuarioCambio
+                id="cambio-usuario"
+                name="usuarioCambio"
+                type="text"
+                autocomplete="username"
+                [(ngModel)]="usuarioCambio"
+                placeholder="Usuario">
+
+            <label for="cambio-actual">Contraseña actual</label>
+            <input
+                id="cambio-actual"
+                name="passwordActual"
+                type="password"
+                autocomplete="current-password"
+                [(ngModel)]="passwordActual"
+                placeholder="Contraseña actual">
+
+            <label for="cambio-nueva">Nueva contraseña</label>
+            <input
+                id="cambio-nueva"
+                name="passwordNueva"
+                type="password"
+                autocomplete="new-password"
+                aria-describedby="politica-password"
+                [(ngModel)]="passwordNueva"
+                placeholder="Nueva contraseña">
+            <small id="politica-password" class="ayuda">
+                Mínimo 8 caracteres, con al menos una letra y un número, sin espacios.
+            </small>
+
+            <label for="cambio-confirmar">Confirmar nueva contraseña</label>
+            <input
+                id="cambio-confirmar"
+                name="confirmarPassword"
+                type="password"
+                autocomplete="new-password"
+                [(ngModel)]="confirmarPassword"
+                placeholder="Confirmar nueva contraseña">
+
+            <div class="mensaje-error" role="alert" aria-live="assertive">
+                <ng-container *ngIf="errorCambio">
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> {{ errorCambio }}
+                </ng-container>
+            </div>
+            <div class="mensaje-exito" role="status" aria-live="polite">
+                <ng-container *ngIf="exitoCambio">
+                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ exitoCambio }}
+                </ng-container>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-login"
+                [disabled]="cargandoCambio">
+
+                {{ cargandoCambio ? 'ACTUALIZANDO...' : 'ACTUALIZAR' }}
+
+            </button>
+
+        </form>
+
+    </div>
+
+</header>

@@ -1,0 +1,267 @@
+<div *ngIf="mensajeRestriccion" class="alert alert-danger text-center">
+    {{ mensajeRestriccion }}
+</div>
+
+<h2 class="mb-4">
+    Panel Administrativo - FerrePueblo
+</h2>
+
+<div class="mb-3">
+    <span class="badge bg-info">Bienvenido: {{ usuarioActual?.nombres }} ({{ usuarioActual?.rol }})</span>
+</div>
+
+<!-- TARJETAS -->
+<div class="row g-4 mb-4">
+
+    <div class="col-md-3">
+        <div class="card shadow border-0">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-sack-dollar fa-2x mb-2"></i>
+                <h6>Ventas del Día</h6>
+                <h3>S/ 8,450</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-hammer fa-2x mb-2"></i>
+                <h6>Herramientas Vendidas</h6>
+                <h3>156</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-boxes-stacked fa-2x mb-2"></i>
+                <h6>Productos en Stock</h6>
+                <h3>2,350</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-cart-shopping fa-2x mb-2"></i>
+                <h6>Pedidos del Día</h6>
+                <h3>48</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- GRÁFICOS -->
+<div class="row mb-4">
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header text-center">
+                Productos Más Vendidos
+            </div>
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-around align-items-end" style="height:250px;">
+
+                    <div class="text-center">
+                        <div class="bg-primary rounded" style="width:40px;height:160px;"></div>
+                        <small>Taladros</small>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="bg-success rounded" style="width:40px;height:130px;"></div>
+                        <small>Martillos</small>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="bg-warning rounded" style="width:40px;height:110px;"></div>
+                        <small>Alicates</small>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="bg-danger rounded" style="width:40px;height:95px;"></div>
+                        <small>Destorn.</small>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="bg-info rounded" style="width:40px;height:75px;"></div>
+                        <small>Pinturas</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header text-center">
+                Ventas por Categoría
+            </div>
+
+            <div class="card-body">
+
+                <h3 class="text-warning text-center">Herramientas</h3>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-success" style="width:40%">
+                        40%
+                    </div>
+                </div>
+
+                <h3 class="text-warning text-center">Construcción</h3>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-primary" style="width:25%">
+                        25%
+                    </div>
+                </div>
+
+                <h3 class="text-warning text-center">Electricidad</h3>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-warning" style="width:15%">
+                        15%
+                    </div>
+                </div>
+
+                <h3 class="text-warning text-center">Plomería</h3>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-danger" style="width:12%">
+                        12%
+                    </div>
+                </div>
+
+                <h3 class="text-warning text-center">Pinturas</h3>
+                <div class="progress">
+                    <div class="progress-bar bg-info" style="width:8%">
+                        8%
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- TABLAS -->
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header text-center">
+                Stock Crítico
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-striped">
+
+                    <thead class="table-warning">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Cemento Sol</td>
+                            <td>5</td>
+                        </tr>
+
+                        <tr>
+                            <td>Pintura Látex Blanca</td>
+                            <td>8</td>
+                        </tr>
+
+                        <tr>
+                            <td>Cable THW 12</td>
+                            <td>10</td>
+                        </tr>
+
+                        <tr>
+                            <td>Tubo PVC 1/2</td>
+                            <td>6</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header text-center">
+                Últimas Ventas
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-striped">
+
+                    <thead class="table-warning">
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Producto</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Juan Pérez</td>
+                            <td>Taladro Bosch</td>
+                            <td>S/ 450</td>
+                        </tr>
+
+                        <tr>
+                            <td>María Gómez</td>
+                            <td>Pintura Látex</td>
+                            <td>S/ 120</td>
+                        </tr>
+
+                        <tr>
+                            <td>Carlos Ruiz</td>
+                            <td>Martillo Stanley</td>
+                            <td>S/ 85</td>
+                        </tr>
+
+                        <tr>
+                            <td>Ana Torres</td>
+                            <td>Cable THW</td>
+                            <td>S/ 220</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

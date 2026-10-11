@@ -1,0 +1,203 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <!-- CAMBIO: bg-success → bg-primary -->
+        <div class="card-header bg-primary text-white">
+            <h1 class="h4 mb-0">
+               {{ esEditar ? 'Editar Producto' : 'Registrar Producto' }}
+            </h1>
+        </div>
+
+        <div class="card-body">
+
+            <div *ngIf="errorGeneral" class="alert alert-danger" role="alert">
+                <i class="fa-solid fa-circle-exclamation me-1" aria-hidden="true"></i>{{ errorGeneral }}
+            </div>
+
+            <form #formProducto="ngForm" (ngSubmit)="guardar(formProducto)" novalidate>
+
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="prod-codigo" class="form-label">Código <span aria-hidden="true">*</span></label>
+                        <input
+                            id="prod-codigo"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="producto.codigo"
+                            name="codigo"
+                            #codigo="ngModel"
+                            maxlength="20"
+                            required
+                            placeholder="Ej.: PRD-0010"
+                            [attr.aria-invalid]="(codigo.invalid && codigo.touched) || erroresBackend['codigo'] ? 'true' : null"
+                            aria-describedby="prod-codigo-error">
+                        <div id="prod-codigo-error" class="text-danger" role="alert">
+                            <ng-container *ngIf="codigo.invalid && codigo.touched">El código es obligatorio (máximo 20 caracteres)</ng-container>
+                            {{ erroresBackend['codigo'] }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-8">
+                        <label for="prod-nombre" class="form-label">Nombre <span aria-hidden="true">*</span></label>
+                        <input
+                            id="prod-nombre"
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="producto.nombre"
+                            name="nombre"
+                            #nombre="ngModel"
+                            minlength="2"
+                            maxlength="45"
+                            required
+                            [attr.aria-invalid]="(nombre.invalid && nombre.touched) || erroresBackend['nombre'] ? 'true' : null"
+                            aria-describedby="prod-nombre-error">
+                        <div id="prod-nombre-error" class="text-danger" role="alert">
+                            <ng-container *ngIf="nombre.invalid && nombre.touched">El nombre es obligatorio (entre 2 y 45 caracteres)</ng-container>
+                            {{ erroresBackend['nombre'] }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label for="prod-stock" class="form-label">Stock <span aria-hidden="true">*</span></label>
+                        <input
+                            id="prod-stock"
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="producto.stock"
+                            name="stock"
+                            #stock="ngModel"
+                            required
+                            min="0"
+                            [attr.aria-invalid]="stock.touched && stock.invalid ? 'true' : null"
+                            aria-describedby="prod-stock-error">
+                        <div id="prod-stock-error" class="text-danger" role="alert">
+                            <ng-container *ngIf="stock.touched && stock.invalid">El stock es inválido (debe ser mayor o igual a 0)</ng-container>
+                            {{ erroresBackend['stock'] }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label for="prod-stock-minimo" class="form-label">Stock mínimo <span aria-hidden="true">*</span></label>
+                        <input
+                            id="prod-stock-minimo"
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="producto.stockMinimo"
+                            name="stockMinimo"
+                            #stockMinimo="ngModel"
+                            required
+                            min="0"
+                            [attr.aria-invalid]="stockMinimo.touched && stockMinimo.invalid ? 'true' : null"
+                            aria-describedby="prod-stock-minimo-ayuda prod-stock-minimo-error">
+                        <small id="prod-stock-minimo-ayuda" class="form-text text-muted">
+                            Si el stock llega a este valor o menos, el producto aparece en Alertas de stock.
+                        </small>
+                        <div id="prod-stock-minimo-error" class="text-danger" role="alert">
+                            <ng-container *ngIf="stockMinimo.touched && stockMinimo.invalid">El stock mínimo es inválido (debe ser mayor o igual a 0)</ng-container>
+                            {{ erroresBackend['stockMinimo'] }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label for="prod-precio-venta" class="form-label">Precio de Venta (incluye IGV) <span aria-hidden="true">*</span></label>
+                        <input
+                            id="prod-precio-venta"
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="producto.precioVenta"
+                            name="precioVenta"
+                            #precioVenta="ngModel"
+                            required
+                            min="0.01"
+                            step="0.01"
+                            [attr.aria-invalid]="precioVenta.touched && precioVenta.invalid ? 'true' : null"
+                            aria-describedby="prod-precio-venta-error">
+                        <div id="prod-precio-venta-error" class="text-danger" role="alert">
+                            <ng-container *ngIf="precioVenta.touched && precioVenta.invalid">El precio de venta es inválido (debe ser mayor a 0)</ng-container>
+                            {{ erroresBackend['precioVenta'] }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label for="prod-precio-compra" class="form-label">Precio de Compra <span aria-hidden="true">*</span></label>
+                        <input
+                            id="prod-precio-compra"
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="producto.precioCompra"
+                            name="precioCompra"
+                            #precioCompra="ngModel"
+                            required
+                            min="0.01"
+                            step="0.01"
+                            [attr.aria-invalid]="precioCompra.touched && precioCompra.invalid ? 'true' : null"
+                            aria-describedby="prod-precio-compra-error">
+                        <div id="prod-precio-compra-error" class="text-danger" role="alert">
+                            <ng-container *ngIf="precioCompra.touched && precioCompra.invalid">El precio de compra es inválido (debe ser mayor a 0)</ng-container>
+                            {{ erroresBackend['precioCompra'] }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="prod-descripcion" class="form-label">Descripción <span aria-hidden="true">*</span></label>
+                    <input
+                        id="prod-descripcion"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="producto.descripcion"
+                        name="descripcion"
+                        #descripcion="ngModel"
+                        maxlength="100"
+                        required
+                        [attr.aria-invalid]="descripcion.touched && descripcion.invalid ? 'true' : null"
+                        aria-describedby="prod-descripcion-error">
+                    <div id="prod-descripcion-error" class="text-danger" role="alert">
+                        <ng-container *ngIf="descripcion.touched && descripcion.invalid">La descripción es obligatoria</ng-container>
+                        {{ erroresBackend['descripcion'] }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="prod-estado" class="form-label">Estado</label>
+                    <select
+                        id="prod-estado"
+                        class="form-select"
+                        [(ngModel)]="producto.estado"
+                        name="estado"
+                        required>
+                        <option value="ACTIVO">ACTIVO</option>
+                        <option value="INACTIVO">INACTIVO</option>
+                    </select>
+                </div>
+
+                <p class="text-muted small"><span aria-hidden="true">*</span> Campo obligatorio</p>
+
+                <div class="d-flex justify-content-end gap-3">
+                    <!-- CAMBIO: btn-success → btn-primary -->
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="guardando">
+                        {{ guardando ? 'Guardando...' : 'Guardar' }}
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        routerLink="/dashboard/productos">
+                        Cancelar
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

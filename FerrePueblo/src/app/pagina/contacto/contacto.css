@@ -1,0 +1,278 @@
+/* ========================= */
+/* CONTENEDOR GENERAL */
+/* ========================= */
+
+.contacto{
+
+    background:#f5f7fb;
+
+    padding:70px 8%;
+
+    min-height:100vh;
+}
+
+/* ========================= */
+/* TITULO */
+/* ========================= */
+
+.titulo{
+
+    text-align:center;
+
+    margin-bottom:60px;
+}
+
+.titulo h1{
+
+    font-size:58px;
+
+    color:#005bbb;
+
+    margin-bottom:15px;
+}
+
+.titulo p{
+
+    font-size:22px;
+
+    color:#666;
+
+    max-width:800px;
+
+    margin:auto;
+
+    line-height:36px;
+}
+
+/* ========================= */
+/* CONTENIDO */
+/* ========================= */
+
+.contenido-contacto{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:70px;
+
+    margin-bottom:70px;
+
+    flex-wrap:wrap;
+}
+
+/* ========================= */
+/* IMAGEN */
+/* ========================= */
+
+.imagen{
+
+    flex:1;
+
+    min-width:380px;
+}
+
+.imagen img{
+
+    width:100%;
+
+    border-radius:20px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+    transition:.3s;
+}
+
+.imagen img:hover{
+
+    transform:scale(1.02);
+}
+
+/* ========================= */
+/* INFORMACION */
+/* ========================= */
+
+.informacion{
+
+    flex:1;
+
+    min-width:350px;
+}
+
+/* ========================= */
+/* TARJETAS */
+/* ========================= */
+
+.info-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:22px 25px;
+
+    margin-bottom:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    transition:.3s;
+}
+
+.info-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.12);
+}
+
+.icono{
+
+    width:65px;
+
+    height:65px;
+
+    background:#005bbb;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:28px;
+
+    flex-shrink:0;
+}
+
+.info-card h3{
+
+    color:#005bbb;
+
+    margin-bottom:5px;
+
+    font-size:24px;
+}
+
+.info-card p{
+
+    color:#555;
+
+    font-size:18px;
+}
+
+/* ========================= */
+/* REDES */
+/* ========================= */
+
+.redes{
+
+    margin-top:40px;
+
+    display:flex;
+
+    gap:20px;
+}
+
+.redes a{
+
+    width:60px;
+
+    height:60px;
+
+    background:#005bbb;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:28px;
+
+    text-decoration:none;
+
+    transition:.3s;
+}
+
+.redes a:hover{
+
+    background:#ff3131;
+
+    transform:translateY(-6px);
+}
+
+/* ========================= */
+/* MAPA */
+/* ========================= */
+
+.mapa{
+
+    margin-top:50px;
+}
+
+.mapa h2{
+
+    text-align:center;
+
+    color:#005bbb;
+
+    font-size:40px;
+
+    margin-bottom:30px;
+}
+
+.mapa iframe{
+
+    border-radius:20px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media(max-width:900px){
+
+    .contenido-contacto{
+
+        flex-direction:column;
+    }
+
+    .imagen{
+
+        min-width:100%;
+    }
+
+    .informacion{
+
+        min-width:100%;
+    }
+
+    .titulo h1{
+
+        font-size:42px;
+    }
+
+    .titulo p{
+
+        font-size:18px;
+    }
+
+}

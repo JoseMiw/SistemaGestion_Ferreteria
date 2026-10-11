@@ -1,0 +1,106 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h4 mb-0">
+                    <i class="fa-solid fa-file-invoice-dollar me-2" aria-hidden="true"></i>
+                    Cotizaciones de Proveedores
+                </h1>
+                <button *ngIf="tienePermiso('crear_cotizaciones')" type="button" class="btn btn-light" (click)="nuevaCotizacion()">
+                    <i class="fa-solid fa-plus me-1" aria-hidden="true"></i>
+                    Nueva Cotización
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <caption class="visually-hidden">Lista de cotizaciones</caption>
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">N°</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Vigencia</th>
+                            <th scope="col">Proveedor</th>
+                            <th scope="col">Solicitud</th>
+                            <th scope="col" class="text-end">Total</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let c of cotizaciones">
+                            <tr>
+                                <td>{{ c.idCotizacion }}</td>
+                                <td>{{ c.fechaCotizacion | date:'dd/MM/yyyy' }}</td>
+                                <td>
+                                    {{ c.fechaVigencia | date:'dd/MM/yyyy' }}
+                                    <span *ngIf="vencida(c) && c.estado === 'REGISTRADA'" class="badge bg-secondary ms-1">Vencida</span>
+                                </td>
+                                <td>{{ c.proveedor.nombreProveedor }}</td>
+                                <td>{{ c.solicitudCompra?.idSolicitudCompra || '—' }}</td>
+                                <td class="text-end">S/. {{ c.montoTotal | number:'1.2-2' }}</td>
+                                <td>
+                                    <span class="badge" [ngClass]="c.estado === 'ORDENADA' ? 'bg-success' : 'bg-info text-dark'">
+                                        {{ c.estado === 'ORDENADA' ? 'Con orden' : 'Registrada' }}
+                                    </span>
+                                </td>
+                                <td class="text-nowrap">
+                                    <button type="button" class="btn btn-sm btn-warning me-2"
+                                            [attr.aria-expanded]="expandida === c.idCotizacion"
+                                            [attr.aria-controls]="'detalle-cot-' + c.idCotizacion"
+                                            (click)="alternarDetalle(c.idCotizacion)">
+                                        <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                                        {{ expandida === c.idCotizacion ? 'Ocultar' : 'Ver' }} productos
+                                    </button>
+                                    <button *ngIf="tienePermiso('crear_ordenes') && c.estado === 'REGISTRADA' && !vencida(c)"
+                                            type="button" class="btn btn-sm btn-success"
+                                            (click)="generarOrden(c)">
+                                        <i class="fa-solid fa-file-signature" aria-hidden="true"></i> Generar orden
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="expandida === c.idCotizacion" [id]="'detalle-cot-' + c.idCotizacion">
+                                <td colspan="8" class="bg-light">
+                                    <table class="table table-sm mb-0">
+                                        <caption class="visually-hidden">Productos de la cotización {{ c.idCotizacion }}</caption>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Código</th>
+                                                <th scope="col">Producto</th>
+                                                <th scope="col" class="text-end">Cantidad</th>
+                                                <th scope="col" class="text-end">Precio unitario</th>
+                                                <th scope="col" class="text-end">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let d of c.detalleCotizacion">
+                                                <td>{{ d.producto.codigo }}</td>
+                                                <td>{{ d.producto.nombre }}</td>
+                                                <td class="text-end">{{ d.cantidad }}</td>
+                                                <td class="text-end">S/. {{ d.precioUnitario | number:'1.2-2' }}</td>
+                                                <td class="text-end">S/. {{ d.subtotal | number:'1.2-2' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <tr *ngIf="cotizaciones.length === 0">
+                            <td colspan="8" class="text-center text-muted">No hay cotizaciones registradas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

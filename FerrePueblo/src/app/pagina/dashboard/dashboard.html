@@ -1,0 +1,95 @@
+<div class="d-flex" style="min-height: 100vh;">
+
+    <!-- MENÚ LATERAL -->
+    <nav class="bg-dark text-white p-3 d-flex flex-column menu-lateral" aria-label="Menú del sistema">
+
+        <h2 class="h4 text-center mb-3">
+            <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>
+            Ferretería
+        </h2>
+
+        <p class="text-center small mb-3 text-white-50" *ngIf="usuarioActual">
+            {{ usuarioActual.nombres }} {{ usuarioActual.apellidos }}<br>
+            <span class="badge bg-secondary">{{ usuarioActual.rol }}</span>
+        </p>
+
+        <ul class="nav flex-column menu-items">
+
+            <!-- DASHBOARD -->
+            <li class="nav-item mb-1">
+                <a class="nav-link text-white" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <!-- PRODUCTOS -->
+            <li class="nav-item mb-1" *ngIf="tienePermiso('ver_productos')">
+                <a class="nav-link text-white" routerLink="/dashboard/productos" routerLinkActive="active">
+                    <i class="fa-solid fa-toolbox" aria-hidden="true"></i>
+                    Productos
+                </a>
+            </li>
+
+            <!-- INVENTARIO (RF01) -->
+            <li class="nav-item mb-1" *ngIf="tienePermiso('ver_alertas_stock')">
+                <a class="nav-link text-white" routerLink="/dashboard/inventario/alertas" routerLinkActive="active">
+                    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                    Alertas de stock
+                </a>
+            </li>
+
+            <!-- VENTAS -->
+            <li class="nav-item mb-1" *ngIf="tienePermiso('ver_ventas')">
+                <a class="nav-link text-white" routerLink="/dashboard/ventas" routerLinkActive="active">
+                    <i class="fa-solid fa-cash-register" aria-hidden="true"></i>
+                    Ventas
+                </a>
+            </li>
+
+            <!-- COMPRAS -->
+            <li class="nav-item mb-1" *ngIf="tienePermiso('ver_compras')">
+                <a class="nav-link text-white" routerLink="/dashboard/compras" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+                    Solicitudes de compra
+                </a>
+            </li>
+            <li class="nav-item mb-1" *ngIf="tienePermiso('ver_cotizaciones')">
+                <a class="nav-link text-white" routerLink="/dashboard/compras/cotizaciones" routerLinkActive="active">
+                    <i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i>
+                    Cotizaciones
+                </a>
+            </li>
+            <li class="nav-item mb-1" *ngIf="tienePermiso('ver_ordenes')">
+                <a class="nav-link text-white" routerLink="/dashboard/compras/ordenes" routerLinkActive="active">
+                    <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
+                    Órdenes de compra
+                </a>
+            </li>
+
+            <!-- CLIENTES -->
+            <li class="nav-item mb-1" *ngIf="tienePermiso('ver_clientes')">
+                <a class="nav-link text-white" routerLink="/dashboard/clientes" routerLinkActive="active">
+                    <i class="fa-solid fa-user" aria-hidden="true"></i>
+                    Clientes
+                </a>
+            </li>
+
+            <!-- ✅ CERRAR SESIÓN - al final del menú -->
+            <li class="nav-item mt-auto pt-3 border-top border-secondary">
+                <button type="button" class="btn btn-danger w-100 py-2" (click)="cerrarSesion()">
+                    <i class="fa-solid fa-sign-out-alt me-2" aria-hidden="true"></i>
+                    Cerrar Sesión
+                </button>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <!-- CONTENIDO -->
+    <main class="flex-grow-1 p-4 bg-light" style="min-height: 100vh;">
+        <router-outlet></router-outlet>
+    </main>
+
+</div>

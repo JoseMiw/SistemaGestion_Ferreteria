@@ -1,0 +1,106 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fa-solid fa-file-invoice me-2"></i>
+                Solicitud de Compra
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <!-- INFORMACIÓN DE LA SOLICITUD -->
+            <div class="row mb-3" *ngIf="solicitud">
+                <div class="col-md-4">
+                    <strong>N° de Solicitud:</strong>
+                    <span class="ms-2">{{ solicitud.idSolicitudCompra }}</span>
+                </div>
+                <div class="col-md-4">
+                    <strong>Fecha:</strong>
+                    <span class="ms-2">{{ solicitud.fechaCotizacion | date:'dd/MM/yyyy' }}</span>
+                </div>
+                <div class="col-md-4">
+                    <strong>Proveedor:</strong>
+                    <span class="ms-2">{{ solicitud.proveedor?.nombreProveedor }}</span>
+                </div>
+            </div>
+
+            <!-- DETALLE DE SOLICITUD -->
+            <h5 class="fw-bold mt-4">Detalle de solicitud</h5>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" *ngIf="solicitud && solicitud.detalleSolicitud && solicitud.detalleSolicitud.length > 0">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Costo unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of solicitud.detalleSolicitud">
+                            <td>{{ item.producto?.codigo }}</td>
+                            <td>{{ item.producto?.nombre }}</td>
+                            <td>{{ item.cantidad }}</td>
+                            <td>S/. {{ item.precioUnitario | number:'1.2-2' }}</td>
+                            <td>S/. {{ item.subtotal | number:'1.2-2' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div *ngIf="solicitud && (!solicitud.detalleSolicitud || solicitud.detalleSolicitud.length === 0)" class="alert alert-warning">
+                    No hay productos en esta solicitud
+                </div>
+
+                <div *ngIf="!solicitud" class="alert alert-info">
+                    Cargando datos...
+                </div>
+            </div>
+
+            <!-- RESUMEN DE TOTALES -->
+            <div class="row mt-3" *ngIf="solicitud && solicitud.detalleSolicitud && solicitud.detalleSolicitud.length > 0">
+                <div class="col-md-6 offset-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">Subtotal:</span>
+                                <span>S/. {{ subtotal | number:'1.2-2' }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">IGV (18%):</span>
+                                <span>S/. {{ igv | number:'1.2-2' }}</span>
+                            </div>
+                            <hr class="border-success border-2">
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold fs-5">Total estimado:</span>
+                                <span class="fw-bold fs-5 text-success">S/. {{ totalPagar | number:'1.2-2' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTONES DE ACCIÓN -->
+            <div class="d-flex justify-content-center gap-3 mt-4">
+
+                <button *ngIf="solicitud && puedeCotizar && solicitud.estado !== 'RECHAZADA'"
+                        type="button" class="btn btn-primary btn-lg px-4" (click)="registrarCotizacion()">
+                    <i class="fa-solid fa-file-invoice-dollar me-2" aria-hidden="true"></i>
+                    Registrar cotización
+                </button>
+
+                <button class="btn btn-secondary btn-lg px-4" (click)="salir()">
+                    <i class="fa-solid fa-arrow-left me-2"></i>
+                    Salir
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

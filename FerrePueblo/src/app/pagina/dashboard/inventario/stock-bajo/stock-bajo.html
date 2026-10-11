@@ -1,0 +1,70 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h4 mb-0">
+                    <i class="fa-solid fa-triangle-exclamation me-2" aria-hidden="true"></i>
+                    Alertas de Stock Bajo
+                </h1>
+                <button type="button" class="btn btn-light" (click)="cargar()" [disabled]="cargando">
+                    <i class="fa-solid fa-rotate me-1" aria-hidden="true"></i>
+                    Actualizar
+                </button>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <p class="text-muted">
+                Productos cuyo stock actual es igual o inferior a su stock mínimo, ordenados del más crítico al menos crítico.
+            </p>
+
+            <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+            <div *ngIf="!cargando && !error" class="mb-3" role="status">
+                <strong>{{ productos.length }}</strong> producto(s) por reponer
+                <span *ngIf="agotados > 0">, de los cuales <strong>{{ agotados }}</strong> están agotados</span>.
+            </div>
+
+            <div class="table-responsive" *ngIf="productos.length > 0">
+                <table class="table table-striped table-hover align-middle">
+                    <caption class="visually-hidden">Productos con stock bajo</caption>
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">Código</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col" class="text-end">Stock actual</th>
+                            <th scope="col" class="text-end">Stock mínimo</th>
+                            <th scope="col">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of productos">
+                            <td>{{ p.codigo }}</td>
+                            <td>{{ p.nombre }}</td>
+                            <td class="text-end fw-bold">{{ p.stock }}</td>
+                            <td class="text-end">{{ p.stockMinimo }}</td>
+                            <td>
+                                <span class="badge" [ngClass]="p.estadoStock === 'AGOTADO' ? 'bg-danger' : 'bg-warning text-dark'">
+                                    <i class="fa-solid me-1" aria-hidden="true"
+                                       [ngClass]="p.estadoStock === 'AGOTADO' ? 'fa-circle-xmark' : 'fa-triangle-exclamation'"></i>
+                                    {{ p.estadoStock === 'AGOTADO' ? 'Agotado' : 'Bajo' }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div *ngIf="!cargando && !error && productos.length === 0" class="alert alert-success" role="status">
+                <i class="fa-solid fa-circle-check me-1" aria-hidden="true"></i>
+                Todos los productos están por encima de su stock mínimo.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

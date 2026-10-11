@@ -1,0 +1,127 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h1 class="h4 mb-0">
+                <i class="fa-solid fa-truck me-2" aria-hidden="true"></i>
+                Registrar Entrega de Producto
+            </h1>
+        </div>
+
+        <div class="card-body">
+
+            <!-- DATOS DE LA ORDEN -->
+            <form class="row mb-3" (ngSubmit)="buscarOrden()" novalidate>
+                <div class="col-md-5">
+                    <label for="entrega-orden" class="form-label fw-bold">N° de Orden de Compra (aprobada):</label>
+                    <div class="d-flex gap-2">
+                        <input id="entrega-orden" name="idOrdenCompra" type="number" class="form-control"
+                               [(ngModel)]="idOrdenCompra" placeholder="Ingrese N° de orden" min="1"
+                               [attr.aria-invalid]="mensajeErrorOrden ? 'true' : null"
+                               aria-describedby="entrega-orden-error">
+                        <button type="submit" class="btn btn-primary" [disabled]="cargando">
+                            <i class="fa-solid fa-magnifying-glass me-1" aria-hidden="true"></i> Buscar
+                        </button>
+                    </div>
+                    <div id="entrega-orden-error" class="text-danger mt-1" role="alert">{{ mensajeErrorOrden }}</div>
+                    <div *ngIf="orden" class="text-success mt-1" role="status">
+                        <i class="fa-solid fa-check-circle me-1" aria-hidden="true"></i> Orden aprobada encontrada
+                    </div>
+                </div>
+            </form>
+
+            <!-- PROVEEDOR -->
+            <div class="row mb-3" *ngIf="orden">
+                <div class="col-md-8">
+                    <label for="entrega-proveedor" class="form-label fw-bold">Proveedor:</label>
+                    <input id="entrega-proveedor" type="text" class="form-control" readonly style="background-color: #f8f9fa;"
+                           [value]="orden.proveedor.nombreProveedor + ' (RUC ' + orden.proveedor.ruc + ')'">
+                </div>
+                <div class="col-md-4">
+                    <label for="entrega-aprobador" class="form-label fw-bold">Aprobada por:</label>
+                    <input id="entrega-aprobador" type="text" class="form-control" readonly style="background-color: #f8f9fa;"
+                           [value]="(orden.usuarioAprobador?.nombres || '') + ' ' + (orden.usuarioAprobador?.apellidos || '')">
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- DETALLE DE PRODUCTOS -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2 class="h5 fw-bold">Productos Recibidos</h2>
+                    <div *ngIf="productos.length === 0" class="alert alert-warning">
+                        No hay productos cargados. Busque una orden de compra aprobada primero.
+                    </div>
+                    <div class="table-responsive" *ngIf="productos.length > 0">
+                        <table class="table table-striped table-hover align-middle">
+                            <caption class="visually-hidden">Productos de la orden a recibir</caption>
+                            <thead class="table-primary">
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Cantidad Pedida</th>
+                                    <th scope="col">Cantidad Recibida</th>
+                                    <th scope="col">Costo Unitario</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of productos; let i = index">
+                                    <td>{{ item.producto.codigo }} · {{ item.producto.nombre }}</td>
+                                    <td>{{ item.cantidadSolicitada }}</td>
+                                    <td>
+                                        <label class="visually-hidden" [for]="'entrega-cant-' + i">Cantidad recibida de {{ item.producto.nombre }}</label>
+                                        <input [id]="'entrega-cant-' + i" type="number" class="form-control" [(ngModel)]="item.cantidadRecibida"
+                                               (ngModelChange)="actualizarSubtotal(item)"
+                                               [attr.aria-invalid]="cantidadInvalida(item) ? 'true' : null"
+                                               min="1" [max]="item.cantidadSolicitada" style="width: 90px;">
+                                    </td>
+                                    <td>S/. {{ item.costoUnitario | number:'1.2-2' }}</td>
+                                    <td>S/. {{ item.subtotal | number:'1.2-2' }}</td>
+                                    <td>
+                                        <label class="visually-hidden" [for]="'entrega-estado-' + i">Estado de {{ item.producto.nombre }}</label>
+                                        <select [id]="'entrega-estado-' + i" class="form-select" [(ngModel)]="item.estadoProducto" style="width: 120px;">
+                                            <option value="BUENO">BUENO</option>
+                                            <option value="MALO">MALO</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr *ngIf="productos.length > 0" class="table-success fw-bold">
+                                    <th scope="row">TOTALES</th>
+                                    <td></td>
+                                    <td><strong>{{ cantidadTotal }}</strong></td>
+                                    <td><strong>S/. {{ costoPromedio | number:'1.2-2' }}</strong></td>
+                                    <td><strong>S/. {{ subtotalTotal | number:'1.2-2' }}</strong></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="errorRegistro" class="alert alert-danger" role="alert">
+                <i class="fa-solid fa-circle-exclamation me-1" aria-hidden="true"></i>{{ errorRegistro }}
+            </div>
+
+            <!-- BOTONES -->
+            <div class="d-flex justify-content-end gap-3 mt-4">
+                <button type="button" class="btn btn-success btn-lg px-5" (click)="registrarEntrega()" [disabled]="productos.length === 0 || guardando">
+                    <i class="fa-solid fa-floppy-disk me-2" aria-hidden="true"></i>
+                    {{ guardando ? 'Registrando...' : 'Registrar Entrega' }}
+                </button>
+                <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancelar()">
+                    <i class="fa-solid fa-arrow-left me-2" aria-hidden="true"></i>
+                    Salir
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

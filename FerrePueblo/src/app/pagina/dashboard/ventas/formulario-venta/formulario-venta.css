@@ -1,0 +1,23 @@
+/* Estilos adicionales para el formulario */
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.table-success td {
+    background-color: #d1e7dd;
+}
+
+.btn-lg {
+    padding: 10px 30px;
+}
+
+/* Para que los radio buttons se vean mejor */
+.form-check {
+    margin-right: 15px;
+}
+
+/* Para el input de cantidad */
+input[type="number"] {
+    text-align: center;
+}

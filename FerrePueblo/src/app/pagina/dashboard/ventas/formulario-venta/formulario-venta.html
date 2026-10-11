@@ -1,0 +1,268 @@
+<div class="container-fluid mt-3">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fa-solid fa-cash-register me-2"></i>
+                Registrar Venta
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <!-- SECCIÓN: DATOS DEL CLIENTE -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="venta-cliente" class="form-label fw-bold">DNI del cliente:</label>
+                    <div class="d-flex gap-2">
+                        <input
+                            id="venta-cliente"
+                            type="text"
+                            inputmode="numeric"
+                            maxlength="8"
+                            class="form-control"
+                            placeholder="Ingrese DNI (8 dígitos)"
+                            [(ngModel)]="dniCliente"
+                            (keyup.enter)="buscarCliente()"
+                            (input)="limpiarBusqueda()"
+                            style="width: 70%;">
+                        <button 
+                            class="btn btn-outline-primary" 
+                            (click)="buscarCliente()"
+                            [disabled]="cargando">
+                            <i class="fa-solid" [ngClass]="{'fa-spinner fa-spin': cargando, 'fa-magnifying-glass': !cargando}"></i>
+                            {{ cargando ? 'Buscando...' : 'Buscar' }}
+                        </button>
+                    </div>
+                    <div *ngIf="mensajeError" class="text-danger mt-1">
+                        <i class="fa-solid fa-exclamation-circle me-1"></i>
+                        {{ mensajeError }}
+                    </div>
+                    <div *ngIf="clienteEncontrado" class="text-success mt-1">
+                        <i class="fa-solid fa-check-circle me-1"></i>
+                        Cliente encontrado
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="venta-cliente-nombre" class="form-label fw-bold">Nombre:</label>
+                    <div class="d-flex gap-2">
+                        <input
+                            id="venta-cliente-nombre"
+                            type="text"
+                            class="form-control" 
+                            placeholder="Nombre del cliente" 
+                            [value]="nombreCliente"
+                            readonly
+                            style="width: 70%; background-color: #f8f9fa;">
+                        <button class="btn btn-outline-success" (click)="registrarCliente()">
+                            <i class="fa-solid fa-user-plus"></i> Registrar cliente
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: BUSCAR PRODUCTO -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="venta-producto" class="form-label fw-bold">Buscar producto:</label>
+                    <div class="d-flex gap-2" style="position: relative;">
+                        <input
+                            id="venta-producto"
+                            type="text"
+                            class="form-control" 
+                            placeholder="Escriba el nombre del producto" 
+                            [(ngModel)]="busquedaProducto"
+                            (input)="buscarProductos()"
+                            (focus)="buscarProductos()"
+                            (blur)="ocultarSugerencias()"
+                            style="width: 70%;">
+                        <button 
+                            class="btn btn-outline-primary"
+                            (click)="buscarProductos()">
+                            <i class="fa-solid fa-magnifying-glass"></i> Buscar Producto
+                        </button>
+                        
+                        <!-- SUGERENCIAS DE PRODUCTOS -->
+                        <div *ngIf="mostrarSugerencias && productosSugeridos.length > 0" 
+                             class="sugerencias-productos"
+                             style="position: absolute; top: 100%; left: 0; width: 70%; z-index: 1000; background: white; border: 1px solid #ddd; border-radius: 4px; max-height: 200px; overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <div *ngFor="let producto of productosSugeridos" 
+                                 class="sugerencia-item"
+                                 (mousedown)="seleccionarProducto(producto)"
+                                 style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #eee;">
+                                <strong>{{ producto.nombre }}</strong>
+                                <span class="text-success ms-2">S/. {{ producto.precioVenta }}</span>
+                                <span class="text-muted ms-2">Stock: {{ producto.stock }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Producto seleccionado -->
+                    <div *ngIf="productoSeleccionado" class="mt-2">
+                        <div class="alert alert-success">
+                            <i class="fa-solid fa-check-circle me-1"></i>
+                            Producto seleccionado: <strong>{{ productoSeleccionado.nombre }}</strong>
+                            - Precio: S/. {{ productoSeleccionado.precioVenta }}
+                            <div class="mt-2">
+                                <label for="venta-cantidad" class="me-2">Cantidad:</label>
+                                <input
+                                    id="venta-cantidad"
+                                    type="number"
+                                    class="form-control" 
+                                    [(ngModel)]="cantidadProducto" 
+                                    min="1"
+                                    style="width: 80px; display: inline-block;">
+                                <button class="btn btn-success ms-2" (click)="agregarProducto()">
+                                    <i class="fa-solid fa-plus me-1"></i> Agregar producto
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: DETALLE DE VENTA -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h5 class="fw-bold">Detalle de Venta</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Productos del detalle -->
+                                <tr *ngFor="let item of detalleVenta; let i = index">
+                                    <td>{{ item.producto.nombre }}</td>
+                                    <td>S/. {{ item.producto.precioVenta | number:'1.2-2' }}</td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            [attr.aria-label]="'Cantidad de ' + item.producto.nombre"
+                                            [(ngModel)]="item.cantidad"
+                                            (change)="actualizarCantidad(i, item.cantidad)"
+                                            style="width: 80px;" 
+                                            min="1">
+                                    </td>
+                                    <td>S/. {{ item.subtotal | number:'1.2-2' }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger" (click)="eliminarProducto(i)" [attr.aria-label]="'Quitar ' + item.producto.nombre">
+                                            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Mensaje cuando no hay productos -->
+                                <tr *ngIf="detalleVenta.length === 0">
+                                    <td colspan="5" class="text-center text-muted">
+                                        No hay productos agregados
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- RESUMEN DE TOTALES -->
+                    <div class="row mt-3" *ngIf="detalleVenta.length > 0">
+                        <div class="col-md-6 offset-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="fw-bold">Subtotal:</span>
+                                        <span>S/. {{ subtotal | number:'1.2-2' }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="fw-bold">IGV (18%):</span>
+                                        <span>S/. {{ igv | number:'1.2-2' }}</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="fw-bold fs-5">Total a pagar:</span>
+                                        <span class="fw-bold fs-5 text-success">S/. {{ totalPagar | number:'1.2-2' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-3">
+                        <button class="btn btn-sm btn-success" (click)="agregarProducto()">
+                            <i class="fa-solid fa-plus me-1"></i> Agregar producto
+                        </button>
+                        <button class="btn btn-sm btn-danger" (click)="detalleVenta = []; subtotal=0;igv=0;totalPagar=0;">
+                            <i class="fa-solid fa-trash-can me-1"></i> Limpiar todo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: TIPO DE PAGO Y COMPROBANTE -->
+            <div class="row mb-3">
+                <!-- Tipo de Pago -->
+                <fieldset class="col-md-6">
+                    <legend class="form-label fw-bold fs-6">Tipo de Pago</legend>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="pago-efectivo" name="tipoPago" value="EFECTIVO" [(ngModel)]="tipoPagoSeleccionado">
+                            <label class="form-check-label" for="pago-efectivo">Efectivo</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="pago-credito" name="tipoPago" value="TARJETA_CREDITO" [(ngModel)]="tipoPagoSeleccionado">
+                            <label class="form-check-label" for="pago-credito">Tarjeta de crédito</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="pago-debito" name="tipoPago" value="TARJETA_DEBITO" [(ngModel)]="tipoPagoSeleccionado">
+                            <label class="form-check-label" for="pago-debito">Tarjeta de débito</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="pago-transferencia" name="tipoPago" value="TRANSFERENCIA" [(ngModel)]="tipoPagoSeleccionado">
+                            <label class="form-check-label" for="pago-transferencia">Transferencia</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="pago-yape" name="tipoPago" value="YAPE" [(ngModel)]="tipoPagoSeleccionado">
+                            <label class="form-check-label" for="pago-yape">Yape</label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Tipo de Comprobante -->
+                <fieldset class="col-md-6">
+                    <legend class="form-label fw-bold fs-6">Tipo de Comprobante</legend>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="comp-factura" name="tipoComprobante" value="FACTURA" [(ngModel)]="tipoComprobanteSeleccionado">
+                            <label class="form-check-label" for="comp-factura">Factura</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="comp-boleta" name="tipoComprobante" value="BOLETA" [(ngModel)]="tipoComprobanteSeleccionado">
+                            <label class="form-check-label" for="comp-boleta">Boleta</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- BOTÓN REGISTRAR VENTA -->
+            <div class="row mt-4">
+                <div class="col-md-12 text-end">
+                    <button class="btn btn-success btn-lg px-5" (click)="registrarVenta()">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Registrar Venta
+                    </button>
+                    <button class="btn btn-secondary btn-lg px-4 ms-2" (click)="cancelar()">
+                        <i class="fa-solid fa-arrow-left me-2"></i>
+                        Volver
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

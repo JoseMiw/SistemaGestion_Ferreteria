@@ -1,0 +1,158 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h1 class="h4 mb-0">
+                <i class="fa-solid fa-file-invoice-dollar me-2" aria-hidden="true"></i>
+                Registrar Cotización
+            </h1>
+        </div>
+
+        <form class="card-body" (ngSubmit)="registrar()" novalidate>
+
+            <div *ngIf="errorGeneral" class="alert alert-danger" role="alert">
+                <i class="fa-solid fa-circle-exclamation me-1" aria-hidden="true"></i>{{ errorGeneral }}
+            </div>
+
+            <!-- SOLICITUD DE ORIGEN (OPCIONAL) -->
+            <fieldset class="row mb-3">
+                <legend class="h6 fw-bold">Solicitud de compra (opcional)</legend>
+                <div class="col-md-6">
+                    <label for="cot-solicitud" class="form-label">N° de solicitud</label>
+                    <div class="d-flex gap-2">
+                        <input id="cot-solicitud" name="idSolicitud" type="number" min="1" class="form-control"
+                               style="max-width: 200px;" [(ngModel)]="idSolicitud"
+                               [attr.aria-invalid]="errores['solicitud'] ? 'true' : null"
+                               aria-describedby="cot-solicitud-error">
+                        <button type="button" class="btn btn-outline-primary" (click)="cargarSolicitud()">
+                            <i class="fa-solid fa-download me-1" aria-hidden="true"></i> Cargar solicitud
+                        </button>
+                    </div>
+                    <div id="cot-solicitud-error" class="text-danger small mt-1" role="alert">{{ errores['solicitud'] }}</div>
+                    <div *ngIf="mensajeSolicitud" class="text-success small mt-1" role="status">{{ mensajeSolicitud }}</div>
+                </div>
+            </fieldset>
+
+            <!-- PROVEEDOR Y FECHAS -->
+            <div class="row mb-3 g-3">
+                <div class="col-md-5">
+                    <label for="cot-ruc" class="form-label fw-bold">RUC del proveedor <span aria-hidden="true">*</span></label>
+                    <div class="d-flex gap-2">
+                        <input id="cot-ruc" name="ruc" type="text" inputmode="numeric" maxlength="11" class="form-control"
+                               [(ngModel)]="rucProveedor" placeholder="11 dígitos" required
+                               [attr.aria-invalid]="errores['proveedor'] ? 'true' : null"
+                               aria-describedby="cot-ruc-error">
+                        <button type="button" class="btn btn-primary" (click)="buscarProveedor()">
+                            <i class="fa-solid fa-magnifying-glass me-1" aria-hidden="true"></i> Buscar
+                        </button>
+                    </div>
+                    <div id="cot-ruc-error" class="text-danger small mt-1" role="alert">{{ errores['proveedor'] }}</div>
+                    <div *ngIf="proveedor" class="text-success small mt-1">
+                        <i class="fa-solid fa-circle-check me-1" aria-hidden="true"></i>{{ proveedor.nombreProveedor }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="cot-fecha" class="form-label fw-bold">Fecha de cotización <span aria-hidden="true">*</span></label>
+                    <input id="cot-fecha" name="fechaCotizacion" type="date" class="form-control" required
+                           [(ngModel)]="fechaCotizacion"
+                           [attr.aria-invalid]="errores['fechaCotizacion'] ? 'true' : null"
+                           aria-describedby="cot-fecha-error">
+                    <div id="cot-fecha-error" class="text-danger small mt-1" role="alert">{{ errores['fechaCotizacion'] }}</div>
+                </div>
+                <div class="col-md-3">
+                    <label for="cot-vigencia" class="form-label fw-bold">Vigente hasta <span aria-hidden="true">*</span></label>
+                    <input id="cot-vigencia" name="fechaVigencia" type="date" class="form-control" required
+                           [(ngModel)]="fechaVigencia" [min]="fechaCotizacion"
+                           [attr.aria-invalid]="errores['fechaVigencia'] ? 'true' : null"
+                           aria-describedby="cot-vigencia-error">
+                    <div id="cot-vigencia-error" class="text-danger small mt-1" role="alert">{{ errores['fechaVigencia'] }}</div>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- PRODUCTOS -->
+            <div class="mb-3" style="position: relative; max-width: 500px;">
+                <label for="cot-producto" class="form-label fw-bold">Agregar producto</label>
+                <input id="cot-producto" name="busquedaProducto" type="text" class="form-control" autocomplete="off"
+                       [(ngModel)]="busquedaProducto" (ngModelChange)="buscarProductos()"
+                       placeholder="Escriba al menos 2 letras del nombre"
+                       aria-describedby="cot-productos-error">
+                <ul *ngIf="productosSugeridos.length > 0" class="list-group position-absolute w-100 shadow" style="z-index: 1000; max-height: 220px; overflow-y: auto;"
+                    aria-label="Productos encontrados">
+                    <li *ngFor="let p of productosSugeridos" class="list-group-item p-0">
+                        <button type="button" class="btn btn-link text-start w-100 text-decoration-none" (click)="agregarProducto(p)">
+                            <strong>{{ p.codigo }}</strong> · {{ p.nombre }}
+                            <span class="text-muted ms-2">Precio compra ref.: S/. {{ p.precioCompra | number:'1.2-2' }}</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <caption class="visually-hidden">Productos de la cotización</caption>
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio unitario (S/.)</th>
+                            <th scope="col" class="text-end">Subtotal</th>
+                            <th scope="col"><span class="visually-hidden">Acciones</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of items; let i = index">
+                            <td>{{ item.producto.codigo }} · {{ item.producto.nombre }}</td>
+                            <td>
+                                <label class="visually-hidden" [for]="'cot-cant-' + i">Cantidad de {{ item.producto.nombre }}</label>
+                                <input [id]="'cot-cant-' + i" [name]="'cantidad' + i" type="number" min="1" step="1" class="form-control"
+                                       style="width: 100px;" [(ngModel)]="item.cantidad"
+                                       [attr.aria-invalid]="!(item.cantidad >= 1) ? 'true' : null">
+                            </td>
+                            <td>
+                                <label class="visually-hidden" [for]="'cot-precio-' + i">Precio unitario de {{ item.producto.nombre }}</label>
+                                <input [id]="'cot-precio-' + i" [name]="'precio' + i" type="number" min="0.01" step="0.01" class="form-control"
+                                       style="width: 130px;" [(ngModel)]="item.precioUnitario"
+                                       [attr.aria-invalid]="!(item.precioUnitario > 0) ? 'true' : null">
+                            </td>
+                            <td class="text-end">S/. {{ subtotal(item) | number:'1.2-2' }}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger" (click)="quitarProducto(i)"
+                                        [attr.aria-label]="'Quitar ' + item.producto.nombre">
+                                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="items.length === 0">
+                            <td colspan="5" class="text-center text-muted">No hay productos agregados</td>
+                        </tr>
+                    </tbody>
+                    <tfoot *ngIf="items.length > 0">
+                        <tr>
+                            <th scope="row" colspan="3" class="text-end">Total</th>
+                            <td class="text-end fw-bold">S/. {{ total | number:'1.2-2' }}</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div id="cot-productos-error" class="text-danger fw-bold" role="alert">{{ errores['productos'] }}</div>
+
+            <div class="d-flex justify-content-end gap-3 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg px-5" [disabled]="guardando">
+                    <i class="fa-solid fa-floppy-disk me-2" aria-hidden="true"></i>
+                    {{ guardando ? 'Registrando...' : 'Registrar Cotización' }}
+                </button>
+                <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancelar()">
+                    <i class="fa-solid fa-arrow-left me-2" aria-hidden="true"></i>
+                    Cancelar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

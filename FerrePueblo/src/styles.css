@@ -1,0 +1,26 @@
+
+html, body{
+    margin:0;
+    padding:0;
+}
+/* ===========================
+   ACCESIBILIDAD (WCAG 2.2 AA)
+=========================== */
+
+/* 2.4.7 Foco visible: todo control enfocado con teclado muestra un contorno claro */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible{
+    outline:3px solid #ffb400;
+    outline-offset:2px;
+}
+
+/* Campos marcados como inválidos: borde además del color del texto (3.3.1) */
+.form-control[aria-invalid="true"],
+.form-select[aria-invalid="true"]{
+    border-color:#b00020;
+    border-width:2px;
+}

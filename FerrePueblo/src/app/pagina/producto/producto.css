@@ -1,0 +1,211 @@
+/* ===========================
+   CONTENEDOR GENERAL
+=========================== */
+
+.productos-container{
+    padding:70px 50px;
+    background:#f5f7fa;
+    min-height:100vh;
+}
+
+/* ===========================
+   TITULO
+=========================== */
+
+.titulo{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.titulo h1{
+    font-size:50px;
+    color:#005bbb;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.titulo p{
+    color:#666;
+    font-size:20px;
+}
+
+/* ===========================
+   GRID DE PRODUCTOS
+=========================== */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:35px;
+}
+
+/* ===========================
+   TARJETA
+=========================== */
+
+.card{
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+    transition:.35s;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 18px 35px rgba(0,0,0,.22);
+}
+
+/* ===========================
+   CORAZÓN
+=========================== */
+
+.favorito{
+    position:absolute;
+    top:15px;
+    right:18px;
+    width:40px;
+    height:40px;
+    background:white;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+    cursor:pointer;
+}
+
+.favorito i{
+    color:#777;
+    font-size:18px;
+}
+
+.favorito:hover i{
+    color:red;
+}
+
+/* ===========================
+   IMAGEN
+=========================== */
+
+.card img{
+    width:100%;
+    height:230px;
+    object-fit:contain;
+    background:#fafafa;
+    padding:20px;
+}
+
+/* ===========================
+   ESTRELLAS
+=========================== */
+
+.estrellas{
+    color:#f7b500;
+    padding:15px 20px 5px;
+    font-size:14px;
+}
+
+.estrellas span{
+    color:#777;
+    margin-left:6px;
+}
+
+/* ===========================
+   NOMBRE
+=========================== */
+
+.card h3{
+    padding:0 20px;
+    color:#222;
+    font-size:24px;
+    margin-bottom:10px;
+}
+
+/* ===========================
+   DESCRIPCIÓN
+=========================== */
+
+.descripcion{
+    padding:0 20px;
+    color:#666;
+    font-size:15px;
+    line-height:24px;
+    min-height:70px;
+}
+
+/* ===========================
+   PRECIO
+=========================== */
+
+.precio{
+    padding:20px;
+    font-size:30px;
+    color:#005bbb;
+    font-weight:bold;
+}
+
+/* ===========================
+   BOTÓN
+=========================== */
+
+.card button{
+    width:85%;
+    margin:0 auto 20px;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#005bbb;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.card button:hover{
+    background:#003f80;
+}
+
+/* ===========================
+   SIN RESULTADOS
+=========================== */
+
+.sin-resultados{
+    text-align:center;
+    color:#777;
+    padding:60px 20px;
+}
+
+.sin-resultados i{
+    font-size:48px;
+    color:#bbb;
+    margin-bottom:15px;
+}
+
+.sin-resultados p{
+    font-size:20px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    .productos-container{
+        padding:40px 20px;
+    }
+
+    .titulo h1{
+        font-size:38px;
+    }
+
+    .titulo p{
+        font-size:18px;
+    }
+
+}

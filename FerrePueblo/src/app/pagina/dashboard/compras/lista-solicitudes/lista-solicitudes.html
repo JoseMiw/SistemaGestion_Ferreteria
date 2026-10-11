@@ -1,0 +1,80 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h4 class="mb-0">
+                    <i class="fa-solid fa-file-invoice me-2"></i>
+                    Lista de Solicitudes de Compra
+                </h4>
+
+                <div class="d-flex gap-2">
+                    <button *ngIf="tienePermiso('crear_compras')" class="btn btn-light" (click)="nuevaSolicitud()">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Nueva Solicitud
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped table-hover" *ngIf="solicitudes.length > 0">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Proveedor</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let item of solicitudes; let i = index">
+                        <!-- ✅ ID REAL DE MYSQL -->
+                        <td>{{ item.idSolicitudCompra }}</td>
+                        <td>{{ item.fechaCotizacion | date:'dd/MM/yyyy' }}</td>
+                        <td>S/. {{ item.montoTotal | number:'1.2-2' }}</td>
+                        <td>{{ item.proveedor?.nombreProveedor }}</td>
+                        <td>
+                            <span class="badge" [ngClass]="{'bg-warning text-dark': item.estado === 'PENDIENTE', 'bg-info text-dark': item.estado === 'COTIZADA', 'bg-success': item.estado === 'APROBADA', 'bg-danger': item.estado === 'RECHAZADA'}">
+                                {{ item.estado }}
+                            </span>
+                        </td>
+                        <td>
+                            <button 
+                                class="btn btn-sm btn-warning me-2" 
+                                (click)="verDetalle(item.idSolicitudCompra)">
+                                <i class="fa-solid fa-eye"></i> Ver Detalle
+                            </button>
+                            <button 
+                                *ngIf="tienePermiso('eliminar_compras')"
+                                class="btn btn-sm btn-danger" 
+                                (click)="eliminar(item.idSolicitudCompra)">
+                                <i class="fa-solid fa-trash-can"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                
+                    <tr *ngIf="solicitudes.length === 0">
+                        <td colspan="6" class="text-center text-muted">
+                            No hay solicitudes de compra registradas
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

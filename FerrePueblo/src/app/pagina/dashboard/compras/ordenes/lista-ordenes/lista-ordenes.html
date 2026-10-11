@@ -1,0 +1,75 @@
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h1 class="h4 mb-0">
+                <i class="fa-solid fa-file-signature me-2" aria-hidden="true"></i>
+                Órdenes de Compra
+            </h1>
+        </div>
+
+        <div class="card-body">
+
+            <p class="text-muted">
+                Las órdenes se generan desde una cotización vigente (menú Cotizaciones) y solo el Gerente puede aprobarlas o rechazarlas.
+            </p>
+
+            <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <caption class="visually-hidden">Lista de órdenes de compra</caption>
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">N°</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Cotización</th>
+                            <th scope="col">Proveedor</th>
+                            <th scope="col" class="text-end">Total</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Aprobado / rechazado por</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of ordenes">
+                            <td>{{ o.idOrdenCompra }}</td>
+                            <td>{{ o.fechaOrden | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ o.cotizacion.idCotizacion }}</td>
+                            <td>{{ o.proveedor.nombreProveedor }}</td>
+                            <td class="text-end">S/. {{ o.montoTotal | number:'1.2-2' }}</td>
+                            <td>
+                                <span class="badge"
+                                      [ngClass]="{
+                                        'bg-warning text-dark': o.estado === 'PENDIENTE',
+                                        'bg-success': o.estado === 'APROBADA',
+                                        'bg-danger': o.estado === 'RECHAZADA',
+                                        'bg-secondary': o.estado === 'ENTREGADA'
+                                      }">{{ o.estado }}</span>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="o.usuarioAprobador; else sinAprobador">
+                                    {{ o.usuarioAprobador.nombres }} {{ o.usuarioAprobador.apellidos }}
+                                    <small class="text-muted d-block">{{ o.fechaAprobacion | date:'dd/MM/yyyy HH:mm' }}</small>
+                                </ng-container>
+                                <ng-template #sinAprobador>—</ng-template>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-warning" (click)="verDetalle(o.idOrdenCompra)">
+                                    <i class="fa-solid fa-eye" aria-hidden="true"></i> Ver detalle
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="ordenes.length === 0">
+                            <td colspan="8" class="text-center text-muted">No hay órdenes de compra registradas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
