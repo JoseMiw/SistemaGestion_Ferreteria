@@ -16,3 +16,5 @@ target/
 # Varios
 .env
 *.bat
+
+entrega/

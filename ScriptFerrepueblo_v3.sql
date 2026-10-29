@@ -5,6 +5,7 @@
 -- bloqueo de cuentas (RNF01) y datos de devolución (RF10).
 -- Para una base v2 existente use Migracion_v2_a_v3.sql.
 -- ============================================================
+SET NAMES utf8mb4;
 CREATE DATABASE ferreteria_bd_v2;
 USE ferreteria_bd_v2;
 

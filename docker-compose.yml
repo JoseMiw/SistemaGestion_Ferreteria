@@ -1,0 +1,43 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: fp-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ferrepueblo
+      TZ: America/Lima
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./ScriptFerrepueblo_v3.sql:/docker-entrypoint-initdb.d/01-ferrepueblo.sql:ro
+      - fp-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  backend:
+    build: ./backend_FerrePueblo/backend
+    image: ferrepueblo-backend
+    container_name: fp-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ferreteria_bd_v2?serverTimezone=America/Lima&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ferrepueblo
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build: ./FerrePueblo
+    image: ferrepueblo-frontend
+    container_name: fp-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  fp-mysql-data:
