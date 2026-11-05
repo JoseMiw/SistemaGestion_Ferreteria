@@ -136,6 +136,20 @@ class DevolucionServiceImplTest {
     }
 
     @Test
+    void cambioPorProductoInactivoSeRechaza() {
+        Producto martillo = new Producto(2);
+        martillo.setStock(5);
+        martillo.setEstado("INACTIVO");
+        when(productoRepository.findById(2)).thenReturn(Optional.of(martillo));
+
+        Devolucion cambio = devolucion(10, 1);
+        cambio.setNuevoProducto(Map.of("idProducto", 2, "cantidad", 1));
+        assertThrows(ResponseStatusException.class, () -> devolucionService.crear(cambio, 3));
+        assertEquals(5, martillo.getStock());
+        verify(devolucionRepository, never()).save(any());
+    }
+
+    @Test
     void cambioDescuentaElProductoNuevoYSinStockSeRechaza() {
         Producto martillo = new Producto(2);
         martillo.setStock(1);

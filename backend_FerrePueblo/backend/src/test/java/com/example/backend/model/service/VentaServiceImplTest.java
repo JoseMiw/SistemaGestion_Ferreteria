@@ -129,6 +129,15 @@ class VentaServiceImplTest {
     }
 
     @Test
+    void productoInactivoNoSeVende() {
+        martillo.setEstado("INACTIVO");
+        var ex = assertThrows(ResponseStatusException.class, () -> ventaService.crear(venta(1), 3));
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
+        assertEquals(10, martillo.getStock());
+        verify(ventaRepository, never()).save(any());
+    }
+
+    @Test
     void clienteInexistenteSeRechaza() {
         Venta venta = venta(1);
         venta.getCliente().setIdCliente(99);

@@ -117,6 +117,10 @@ public class DevolucionServiceImpl implements DevolucionService{
 
             Producto productoNuevo = productoRepository.findById(idProductoNuevo.intValue())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto nuevo no encontrado"));
+            if (productoNuevo.estaInactivo()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "El producto \"" + productoNuevo.getNombre() + "\" está inactivo y no se puede entregar en un cambio");
+            }
             if (productoNuevo.getStock() < cantidad.intValue()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Stock insuficiente para el cambio. Stock actual: " + productoNuevo.getStock());

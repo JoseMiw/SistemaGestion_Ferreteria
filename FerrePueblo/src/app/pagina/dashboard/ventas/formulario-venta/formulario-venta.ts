@@ -136,7 +136,8 @@ export class FormularioVenta {
     // Buscar productos por nombre
     this.productoService.buscarPorNombre(this.busquedaProducto.trim()).subscribe({
       next: (productos) => {
-        this.productosSugeridos = productos;
+        // Los productos inactivos no se pueden vender
+        this.productosSugeridos = productos.filter(p => p.estado?.toUpperCase() !== 'INACTIVO');
         this.mostrarSugerencias = this.productosSugeridos.length > 0;
         this.cdr.detectChanges();
       },

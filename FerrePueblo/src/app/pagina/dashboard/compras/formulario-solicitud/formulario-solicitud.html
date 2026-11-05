@@ -11,6 +11,10 @@
 
         <div class="card-body">
 
+            <div *ngIf="errorGeneral" class="alert alert-danger" role="alert">
+                <i class="fa-solid fa-circle-exclamation me-1" aria-hidden="true"></i>{{ errorGeneral }}
+            </div>
+
             <!-- SECCIÓN: DATOS DEL PROVEEDOR -->
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -22,13 +26,15 @@
                             [(ngModel)]="rucProveedor"
                             (input)="limpiarBusquedaProveedor()"
                             placeholder="Ingrese RUC (11 dígitos)"
+                            [attr.aria-invalid]="mensajeError ? 'true' : null"
+                            aria-describedby="sol-ruc-error"
                             style="max-width: 250px;">
                         <button class="btn btn-primary" (click)="buscarProveedor()" [disabled]="cargando">
                             <i class="fa-solid fa-magnifying-glass me-1"></i>
                             Buscar
                         </button>
                     </div>
-                    <div *ngIf="mensajeError" class="text-danger mt-1">
+                    <div *ngIf="mensajeError" id="sol-ruc-error" class="text-danger mt-1" role="alert">
                         <i class="fa-solid fa-exclamation-circle me-1"></i>
                         {{ mensajeError }}
                     </div>
@@ -63,6 +69,8 @@
                             (focus)="buscarProductos()"
                             (blur)="ocultarSugerencias()"
                             placeholder="Escriba el nombre del producto"
+                            [attr.aria-invalid]="errores['productos'] && detalleSolicitud.length === 0 ? 'true' : null"
+                            aria-describedby="sol-productos-error"
                             style="max-width: 400px;">
                         <button class="btn btn-primary" (click)="buscarProductos()">
                             <i class="fa-solid fa-magnifying-glass me-1"></i>
@@ -96,10 +104,13 @@
                                     class="form-control"
                                     [(ngModel)]="cantidadProducto"
                                     min="1"
+                                    [attr.aria-invalid]="errores['cantidad'] ? 'true' : null"
+                                    aria-describedby="sol-cantidad-error"
                                     style="width: 80px; display: inline-block;">
                                 <button class="btn btn-success ms-2" (click)="agregarProducto()">
                                     <i class="fa-solid fa-plus me-1"></i> Agregar producto
                                 </button>
+                                <div id="sol-cantidad-error" class="text-danger fw-bold mt-1" role="alert">{{ errores['cantidad'] }}</div>
                             </div>
                         </div>
                     </div>
@@ -131,6 +142,8 @@
                                             class="form-control"
                                             [(ngModel)]="item.cantidad"
                                             (change)="actualizarCantidad(i, item.cantidad)"
+                                            [attr.aria-label]="'Cantidad de ' + item.producto.nombre"
+                                            [attr.aria-invalid]="!cantidadValida(item.cantidad) ? 'true' : null"
                                             style="width: 80px;"
                                             min="1">
                                     </td>
@@ -149,6 +162,8 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div id="sol-productos-error" class="text-danger fw-bold" role="alert">{{ errores['productos'] }}</div>
 
                     <!-- RESUMEN DE TOTALES -->
                     <div class="row mt-3" *ngIf="detalleSolicitud.length > 0">

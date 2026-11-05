@@ -85,6 +85,11 @@ public class VentaServiceImpl implements VentaService{
             Producto producto = productoRepository.findById(detalle.getProducto().getIdProducto())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Producto no encontrado"));
 
+            if (producto.estaInactivo()) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "El producto \"" + producto.getNombre() + "\" está inactivo y no se puede vender");
+            }
+
             int solicitado = cantidadPorProducto.merge(producto.getIdProducto(), detalle.getCantidad(), Integer::sum);
             if (solicitado > producto.getStock()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

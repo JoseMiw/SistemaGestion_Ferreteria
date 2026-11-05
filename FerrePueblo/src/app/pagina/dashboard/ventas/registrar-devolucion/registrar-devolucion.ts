@@ -200,6 +200,7 @@ export class RegistrarDevolucion implements OnInit {
       next: (productos) => {
         this.productosDisponibles = productos.filter(p => 
           p.idProducto !== this.productoSeleccionado?.producto.idProducto && p.stock > 0
+          && p.estado?.toUpperCase() !== 'INACTIVO'
         );
         this.cdr.detectChanges();
       },

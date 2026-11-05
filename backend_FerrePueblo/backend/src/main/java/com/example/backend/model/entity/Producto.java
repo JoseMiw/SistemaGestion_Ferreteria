@@ -32,6 +32,7 @@ public class Producto {
     public static final String STOCK_NORMAL = "NORMAL";
     public static final String STOCK_BAJO = "BAJO";
     public static final String STOCK_AGOTADO = "AGOTADO";
+    public static final String ESTADO_INACTIVO = "INACTIVO";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,6 +94,11 @@ public class Producto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public String getEstadoStock() {
         return clasificarStock(stock, stockMinimo);
+    }
+
+    /** Un producto INACTIVO no se puede vender ni entregar en un cambio. */
+    public boolean estaInactivo() {
+        return ESTADO_INACTIVO.equalsIgnoreCase(estado);
     }
 
     public static String clasificarStock(Integer stock, Integer stockMinimo) {

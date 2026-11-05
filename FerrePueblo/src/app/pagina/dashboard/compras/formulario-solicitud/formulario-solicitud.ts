@@ -6,7 +6,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SolicitudService } from '../../../../services/solicitud.service';
 import { ProveedorService } from '../../../../services/proveedor.service';
-import { fechaLocalISO } from '../../../../utils/errores';
+import { HttpErrorResponse } from '@angular/common/http';
+import { fechaLocalISO, mensajeError } from '../../../../utils/errores';
 
 
 
@@ -30,6 +31,10 @@ export class FormularioSolicitud {
   proveedorEncontrado: boolean = false;
   mensajeError: string = '';
   cargando: boolean = false;
+
+  // Errores junto a cada campo (CA04)
+  errores: { [campo: string]: string } = {};
+  errorGeneral: string = '';
 
   // Datos del producto
   busquedaProducto: string = '';
@@ -137,6 +142,8 @@ export class FormularioSolicitud {
     this.busquedaProducto = producto.nombre;
     this.mostrarSugerencias = false;
     this.cantidadProducto = 1;
+    delete this.errores['productos'];
+    delete this.errores['cantidad'];
     this.cdr.detectChanges();
   }
 
@@ -152,13 +159,18 @@ export class FormularioSolicitud {
   // ============================================
 
   agregarProducto(): void {
+    delete this.errores['productos'];
+    delete this.errores['cantidad'];
+
     if (!this.productoSeleccionado) {
-      alert('Primero busque y seleccione un producto');
+      this.errores['productos'] = 'Primero busque y seleccione un producto';
+      this.cdr.detectChanges();
       return;
     }
 
-    if (this.cantidadProducto < 1) {
-      alert('La cantidad debe ser mayor a 0');
+    if (!this.cantidadValida(this.cantidadProducto)) {
+      this.errores['cantidad'] = 'La cantidad debe ser un entero mayor a 0';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -167,7 +179,8 @@ export class FormularioSolicitud {
     );
 
     if (existente) {
-      alert('Este producto ya está agregado');
+      this.errores['productos'] = `"${this.productoSeleccionado.nombre}" ya está agregado`;
+      this.cdr.detectChanges();
       return;
     }
 
@@ -190,15 +203,18 @@ export class FormularioSolicitud {
 
   eliminarProducto(index: number): void {
     this.detalleSolicitud.splice(index, 1);
+    delete this.errores['productos'];
     this.calcularTotal();
     this.cdr.detectChanges();
   }
 
   actualizarCantidad(index: number, nuevaCantidad: number): void {
-    if (nuevaCantidad < 1) {
-      alert('La cantidad debe ser mayor a 0');
+    if (!this.cantidadValida(nuevaCantidad)) {
+      this.errores['productos'] = 'Las cantidades deben ser enteros mayores a 0';
+      this.cdr.detectChanges();
       return;
     }
+    delete this.errores['productos'];
     const item = this.detalleSolicitud[index];
     item.cantidad = nuevaCantidad;
     item.subtotal = item.producto.precioCompra * nuevaCantidad;
@@ -216,6 +232,8 @@ export class FormularioSolicitud {
 
   limpiarTodo(): void {
     this.detalleSolicitud = [];
+    this.errores = {};
+    this.errorGeneral = '';
     this.subtotal = 0;
     this.igv = 0;
     this.totalPagar = 0;
@@ -226,14 +244,30 @@ export class FormularioSolicitud {
   // REGISTRAR SOLICITUD
   // ============================================
 
-  registrarSolicitud(): void {
-    if (!this.proveedorEncontrado) {
-        alert('Primero debe buscar un proveedor válido');
-        return;
-    }
+  cantidadValida(cantidad: number): boolean {
+    return cantidad >= 1 && Number.isInteger(cantidad);
+  }
 
+  private validar(): boolean {
+    this.errores = {};
+    this.mensajeError = this.proveedorEncontrado ? '' : 'Primero debe buscar un proveedor válido';
+
+    if (this.productoSeleccionado && !this.cantidadValida(this.cantidadProducto)) {
+      this.errores['cantidad'] = 'La cantidad debe ser un entero mayor a 0';
+    }
     if (this.detalleSolicitud.length === 0) {
-        alert('Debe agregar al menos un producto');
+      this.errores['productos'] = 'Debe agregar al menos un producto';
+    } else if (this.detalleSolicitud.some(item => !this.cantidadValida(item.cantidad))) {
+      this.errores['productos'] = 'Las cantidades deben ser enteros mayores a 0';
+    }
+    return !this.mensajeError && Object.keys(this.errores).length === 0;
+  }
+
+  registrarSolicitud(): void {
+    this.errorGeneral = '';
+    if (!this.validar()) {
+        this.errorGeneral = 'Revise los campos marcados';
+        this.cdr.detectChanges();
         return;
     }
 
@@ -257,17 +291,12 @@ export class FormularioSolicitud {
     this.solicitudService.crear(solicitudData).subscribe({
         next: (response) => {
             console.log('Solicitud creada:', response);
-            alert('Solicitud registrada exitosamente');
             this.router.navigate(['/dashboard/compras']);
         },
-        error: (err) => {
+        error: (err: HttpErrorResponse) => {
             console.error('Error al crear solicitud:', err);
-            if (err.error) {
-                console.error('Detalles del error:', err.error);
-                alert(`Error: ${err.error.message || 'Error al registrar la solicitud'}`);
-            } else {
-                alert('Error al registrar la solicitud. Revisa la consola.');
-            }
+            this.errorGeneral = mensajeError(err, 'Error al registrar la solicitud');
+            this.cdr.detectChanges();
         }
     });
 }
