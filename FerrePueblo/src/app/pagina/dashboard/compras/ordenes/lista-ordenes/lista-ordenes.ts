@@ -16,12 +16,16 @@ import { mensajeError } from '../../../../../utils/errores';
 export class ListaOrdenes implements OnInit {
   ordenes: OrdenCompraResponse[] = [];
   error = '';
+  // Mensaje de éxito enviado por otra pantalla (por ejemplo, al registrar una entrega)
+  mensaje = '';
 
   constructor(
     private ordenService: OrdenService,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.mensaje = this.router.currentNavigation()?.extras.state?.['mensaje'] ?? '';
+  }
 
   ngOnInit(): void {
     this.ordenService.listar().subscribe({

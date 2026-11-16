@@ -35,12 +35,12 @@
             <div class="row mb-3" *ngIf="orden">
                 <div class="col-md-8">
                     <label for="entrega-proveedor" class="form-label fw-bold">Proveedor:</label>
-                    <input id="entrega-proveedor" type="text" class="form-control" readonly style="background-color: #f8f9fa;"
+                    <input id="entrega-proveedor" type="text" class="form-control bg-body-tertiary" readonly
                            [value]="orden.proveedor.nombreProveedor + ' (RUC ' + orden.proveedor.ruc + ')'">
                 </div>
                 <div class="col-md-4">
                     <label for="entrega-aprobador" class="form-label fw-bold">Aprobada por:</label>
-                    <input id="entrega-aprobador" type="text" class="form-control" readonly style="background-color: #f8f9fa;"
+                    <input id="entrega-aprobador" type="text" class="form-control bg-body-tertiary" readonly
                            [value]="(orden.usuarioAprobador?.nombres || '') + ' ' + (orden.usuarioAprobador?.apellidos || '')">
                 </div>
             </div>

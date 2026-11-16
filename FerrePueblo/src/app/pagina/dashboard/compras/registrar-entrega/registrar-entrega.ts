@@ -159,9 +159,9 @@ export class RegistrarEntrega implements OnInit{
       }))
     }).subscribe({
       next: () => {
-        // El stock ya fue actualizado por el backend
-        alert('Entrega registrada correctamente. El stock fue actualizado.');
-        this.router.navigate(['/dashboard/compras/ordenes']);
+        // El stock ya fue actualizado por el backend; el mensaje se muestra en la lista de órdenes
+        const mensaje = `Entrega de la orden N° ${this.orden!.idOrdenCompra} registrada correctamente. El stock fue actualizado.`;
+        this.router.navigate(['/dashboard/compras/ordenes'], { state: { mensaje } });
       },
       error: (err: HttpErrorResponse) => {
         this.guardando = false;

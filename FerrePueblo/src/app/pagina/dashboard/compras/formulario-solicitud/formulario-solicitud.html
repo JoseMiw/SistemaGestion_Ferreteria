@@ -47,10 +47,9 @@
                     <label for="sol-campo-2" class="form-label fw-bold">Nombre:</label>
                     <input id="sol-campo-2"
                         type="text"
-                        class="form-control"
+                        class="form-control bg-body-tertiary"
                         [value]="nombreProveedor"
-                        readonly
-                        style="background-color: #f8f9fa;">
+                        readonly>
                 </div>
             </div>
 
@@ -80,11 +79,11 @@
                         <!-- SUGERENCIAS DE PRODUCTOS -->
                         <div *ngIf="mostrarSugerencias && productosSugeridos.length > 0"
                              class="sugerencias-productos"
-                             style="position: absolute; top: 100%; left: 0; width: 400px; z-index: 1000; background: white; border: 1px solid #ddd; border-radius: 4px; max-height: 200px; overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                             style="position: absolute; top: 100%; left: 0; width: 400px; z-index: 1000; background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 4px; max-height: 200px; overflow-y: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                             <div *ngFor="let producto of productosSugeridos"
                                  class="sugerencia-item"
                                  (mousedown)="seleccionarProducto(producto)"
-                                 style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #eee;">
+                                 style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid var(--bs-border-color-translucent);">
                                 <strong>{{ producto.nombre }}</strong>
                                 <span class="text-success ms-2">S/. {{ producto.precioCompra }}</span>
                                 <span class="text-muted ms-2">Stock: {{ producto.stock }}</span>
