@@ -1,0 +1,10 @@
+{
+  "name": "pruebas-ferrepueblo",
+  "private": true,
+  "type": "module",
+  "description": "Ejecucion de CP01 a CP12 del Plan de Pruebas con Playwright",
+  "dependencies": {
+    "playwright-core": "^1",
+    "mysql2": "^3"
+  }
+}

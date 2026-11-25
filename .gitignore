@@ -17,4 +17,5 @@ target/
 .env
 *.bat
 
-entrega/
+entrega/*
+!entrega/scripts_playwright/

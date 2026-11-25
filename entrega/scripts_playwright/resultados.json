@@ -1,0 +1,228 @@
+{
+  "CP01": {
+    "fecha": "25/11/2026 17:12",
+    "estado": "Aprobado",
+    "obtenido": "Se listaron Taladro Bosch (PRD-0001, stock 3, mínimo 5) y Martillo Stanley (PRD-0002, stock 5, mínimo 5) con código, nombre, stock actual y stock mínimo. Pintura Latex (stock 12) no aparece.",
+    "observaciones": "Columnas mostradas: Código, Nombre, Stock actual, Stock mínimo, Estado. Filas: PRD-0001 Taladro Bosch (stock 3, mínimo 5, Bajo); PRD-0002 Martillo Stanley (stock 5, mínimo 5, Bajo). BD (SELECT stock <= stockMinimo): PRD-0001 Taladro Bosch 3/5; PRD-0002 Martillo Stanley 5/5.",
+    "capturas": [
+      "CP01_1_login_almacenero.png",
+      "CP01_2_modulo_alertas.png",
+      "CP01_3_consulta_ejecutada.png",
+      "CP01_4_revision_resultado.png"
+    ]
+  },
+  "CP02": {
+    "fecha": "25/11/2026 17:12",
+    "estado": "Aprobado",
+    "validaOk": true,
+    "ningunaGuardada": true,
+    "camposSenalados": true,
+    "obtenido": "Solicitud válida guardada con N° 1 y estado PENDIENTE. Variantes inválidas: ninguna se guardó; el campo se señaló en pantalla.",
+    "observaciones": "Válida: mensaje \"\"; BD: solicitud N° 1, estado PENDIENTE, fecha 2026-11-25, total 1250.00, detalle 50 Cemento Sol Tipo I. Sin proveedor: no se guardó; mensajes en ventana emergente: \"\"; campos marcados en pantalla: 1; texto en pantalla: Revise los campos marcados | Primero debe buscar un proveedor válido. Sin producto: no se guardó; mensajes en ventana emergente: \"\"; campos marcados en pantalla: 1; texto en pantalla: Revise los campos marcados | Debe agregar al menos un producto. Cantidad 0: no se guardó; mensajes en ventana emergente: \"\"; campos marcados en pantalla: 2; texto en pantalla: Revise los campos marcados | La cantidad debe ser un entero mayor a 0 | Debe agregar al menos un producto. Cantidad -1: no se guardó; mensajes en ventana emergente: \"\"; campos marcados en pantalla: 2; texto en pantalla: Revise los campos marcados | La cantidad debe ser un entero mayor a 0 | Debe agregar al menos un producto.",
+    "capturas": [
+      "CP02_1_login_asistente.png",
+      "CP02_2_formulario.png",
+      "CP02_3a_solicitud_valida_lista.png",
+      "CP02_3b_solicitud_valida_guardada.png",
+      "CP02_4a_sin_proveedor.png",
+      "CP02_4b_sin_producto.png",
+      "CP02_4c_cantidad_0.png",
+      "CP02_4d_cantidad_menos1.png"
+    ]
+  },
+  "CP03": {
+    "fecha": "25/11/2026 17:12",
+    "estado": "Aprobado",
+    "obtenido": "Por código (PRD-0001) y por nombre parcial (\"Tala\") se mostró Taladro Bosch con stock 3 y estado Bajo, igual que en la BD. Con XXX999 se informó \"No existe ningún producto…\" y la tabla producto no cambió.",
+    "observaciones": "BD: PRD-0001 Taladro Bosch, stock 3, mínimo 5 → estado esperado Bajo. Por código \"PRD-0001\": PRD-0001 / Taladro Bosch / 3 / 5 / Bajo. Por nombre \"Tala\": PRD-0001 / Taladro Bosch / 3 / 5 / Bajo. Código XXX999: \"No existe ningún producto con el código o nombre \"XXX999\"\". Tabla producto antes y después de las búsquedas: idéntica (no se modificaron datos).",
+    "capturas": [
+      "CP03_1_lista_productos.png",
+      "CP03_2_busqueda_codigo.png",
+      "CP03_3_busqueda_nombre_parcial.png",
+      "CP03_4_codigo_inexistente.png"
+    ]
+  },
+  "CP04": {
+    "fecha": "25/11/2026 17:12",
+    "estado": "Aprobado",
+    "obtenido": "Cotización válida N° 1 guardada, asociada a Ferretería Central SAC con 100 x S/ 25.00 y vigencia 2026-12-10. Precio 0: no guardada, campo marcado y mensaje \"Revise los campos marcados / Las cantidades deben ser enteros mayores a 0 y los precios mayores a 0\"; Cantidad -5: no guardada, campo marcado y mensaje \"Revise los campos marcados / Las cantidades deben ser enteros mayores a 0 y los precios mayores a 0\"; Sin vigencia: no guardada, campo marcado y mensaje \"Revise los campos marcados / Ingrese la fecha de vigencia\".",
+    "observaciones": "Válida: BD cotización N° 1, proveedor Ferretería Central SAC, vigencia 2026-12-10 (esperada 2026-12-10), estado REGISTRADA, detalle 100 x 25.00 = 2500.00 Cemento Sol Tipo I, total 2500.00. Precio 0: no se guardó; mensajes: \"Revise los campos marcados | Las cantidades deben ser enteros mayores a 0 y los precios mayores a 0\"; campos marcados: cot-precio-0. Cantidad -5: no se guardó; mensajes: \"Revise los campos marcados | Las cantidades deben ser enteros mayores a 0 y los precios mayores a 0\"; campos marcados: cot-cant-0. Sin vigencia: no se guardó; mensajes: \"Revise los campos marcados | Ingrese la fecha de vigencia\"; campos marcados: cot-vigencia.",
+    "capturas": [
+      "CP04_1_cotizacion_valida_llena.png",
+      "CP04_2_cotizacion_valida_guardada.png",
+      "CP04_3_precio_0.png",
+      "CP04_4_cantidad_menos5.png",
+      "CP04_5_sin_vigencia.png"
+    ]
+  },
+  "CP05": {
+    "fecha": "25/11/2026 17:12",
+    "estado": "No ejecutado",
+    "pasosOk": {
+      "paso2": true,
+      "paso3": true,
+      "paso5": true
+    },
+    "obtenido": "Pasos 1, 2, 3 y 5 ejecutados y conformes: la orden N° 1 se creó desde la cotización (PENDIENTE), el gerente la aprobó (APROBADA, aprobador y fecha registrados) y el vendedor no pudo aprobar (menú sin el módulo, URL redirigida y API con HTTP 403). Paso 4 no ejecutable: el sistema impide crear una orden incompleta.",
+    "observaciones": "Paso 2: orden N° 1 creada desde la cotización N° 1, estado PENDIENTE, total 2500.00. Paso 3: BD estado APROBADA, aprobador Gerente (GERENTE), fecha 25/11/2026, 5:12:48 p. m.. Paso 4: NO EJECUTABLE. El sistema solo crea órdenes desde cotizaciones ya validadas (cantidad y precio > 0, verificado en CP04) y la BD lo refuerza con CHECK (cantidad > 0, precioUnitario > 0), por lo que no existe forma de obtener una orden incompleta para intentar aprobarla. Paso 5: menú del vendedor sin \"Órdenes de compra\"; URL directa redirigida a /dashboard?error=no_permiso con aviso \"No tiene permisos para acceder a esta sección\"; PUT /api/ordenes/1/aprobar con token del vendedor → HTTP 403 {\"status\":403,\"message\":\"No tiene permisos para realizar esta acción\"}.",
+    "capturas": [
+      "CP05_1_login_gerente.png",
+      "CP05_2a_cotizaciones.png",
+      "CP05_2b_confirmar_generar_orden.png",
+      "CP05_2c_orden_creada_pendiente.png",
+      "CP05_3_orden_aprobada.png",
+      "CP05_5a_menu_vendedor.png",
+      "CP05_5b_vendedor_url_orden_denegada.png"
+    ]
+  },
+  "CP06": {
+    "fecha": "25/11/2026 17:12",
+    "estado": "Aprobado",
+    "obtenido": "Venta N° 1 registrada para Juan Lopez: 2 x S/ 14.00, subtotal 23.73, IGV 4.27, total 28.00 (el precio de venta incluye IGV). Stock de Martillo Stanley 20 → 18.",
+    "observaciones": "Resumen en pantalla antes de confirmar: Subtotal: S/. 23.73 IGV (18%): S/. 4.27 Total a pagar: S/. 28.00. BD: venta N° 1, cliente Juan Lopez (DNI 12345678), detalle 2 x 14.00 = 28.00, subtotal 23.73, IGV 4.27, total 28.00. Stock de Martillo Stanley: 20 → 18 (pantalla: 18).",
+    "capturas": [
+      "CP06_1_login_vendedor.png",
+      "CP06_2_cliente_seleccionado.png",
+      "CP06_3_producto_agregado.png",
+      "CP06_4_venta_confirmada.png",
+      "CP06_5_stock_despues.png"
+    ]
+  },
+  "CP07": {
+    "fecha": "25/11/2026 17:13",
+    "estado": "Aprobado",
+    "obtenido": "Cliente Carlos Mendoza (DNI 70123456) registrado; teléfono actualizado a 987000222. DNI \"123\" rechazado con el campo DNI marcado; nombres vacíos rechazado con el campo Nombres marcado.",
+    "observaciones": "Registro: BD cliente N° 4 Carlos Mendoza, DNI 70123456, teléfono 987000111, correo carlos.mendoza@email.com. Edición: teléfono en BD 987000222. DNI \"123\": no se guardó; campo marcado: cli-dni; mensajes: \"Revise los campos marcados | El DNI es obligatorio y debe tener exactamente 8 dígitos numéricos\". Nombres vacíos: no se guardó; campo marcado: cli-nombres; mensajes: \"Revise los campos marcados | Los nombres son obligatorios (mínimo 2 caracteres)\".",
+    "capturas": [
+      "CP07_1_nuevo_cliente_lleno.png",
+      "CP07_2_cliente_registrado.png",
+      "CP07_3a_cliente_buscado_por_dni.png",
+      "CP07_3b_editar_telefono.png",
+      "CP07_3c_edicion_guardada.png",
+      "CP07_4_dni_invalido.png",
+      "CP07_5_nombres_vacios.png"
+    ]
+  },
+  "CP08": {
+    "fecha": "25/11/2026 17:13",
+    "estado": "Aprobado",
+    "obtenido": "Los cinco roles vieron solo los módulos de su matriz de permisos. Con el Vendedor, la URL directa de Órdenes de compra fue denegada (redirección al dashboard con aviso de falta de permisos).",
+    "observaciones": "Administrador: Dashboard, Productos, Alertas de stock, Ventas, Solicitudes de compra, Cotizaciones, Órdenes de compra, Clientes → coincide con lo esperado. Gerente: Dashboard, Productos, Alertas de stock, Ventas, Solicitudes de compra, Cotizaciones, Órdenes de compra, Clientes → coincide con lo esperado. Vendedor: Dashboard, Productos, Ventas, Clientes → coincide con lo esperado. AsistenteCompra: Dashboard, Productos, Solicitudes de compra, Cotizaciones, Órdenes de compra → coincide con lo esperado. Almacenero: Dashboard, Productos, Alertas de stock, Solicitudes de compra, Órdenes de compra → coincide con lo esperado. Vendedor con URL /dashboard/compras/ordenes: redirigido a /dashboard?error=no_permiso con el aviso \"No tiene permisos para acceder a esta sección\". Observación: el Administrador ve todos los módulos operativos; el sistema no tiene un módulo de gestión de usuarios y accesos (descrito para ese rol en la sección 1.3 del informe, pero sin requisito RF asociado).",
+    "capturas": [
+      "CP08_1_menu_Administrador.png",
+      "CP08_2_menu_Gerente.png",
+      "CP08_3_menu_Vendedor.png",
+      "CP08_3b_vendedor_url_ordenes.png",
+      "CP08_4_menu_AsistenteCompra.png",
+      "CP08_5_menu_Almacenero.png"
+    ]
+  },
+  "CP09": {
+    "fecha": "25/11/2026 17:14",
+    "estado": "Aprobado",
+    "obtenido": "Actual incorrecta: rechazado (\"Usuario o contraseña incorrectos\"). Nueva corta: rechazado (\"La nueva contraseña debe tener al menos 8 caracteres\"). Datos correctos: \"Contraseña cambiada correctamente\". Inicio de sesión con la nueva contraseña exitoso.",
+    "observaciones": "Paso 2 (actual \"abc\"): mensaje \"Usuario o contraseña incorrectos\"; contraseña en BD sin cambios. Paso 3 (nueva \"ab1\"): mensaje \"La nueva contraseña debe tener al menos 8 caracteres\"; contraseña en BD sin cambios. Paso 4 (nueva \"Ferre2026\"): mensaje \"Contraseña cambiada correctamente\"; contraseña en BD actualizada (hash BCrypt nuevo). Paso 5: inicio de sesión con \"Ferre2026\" exitoso (dashboard del Vendedor).",
+    "capturas": [
+      "CP09_1_formulario_cambio.png",
+      "CP09_2_actual_incorrecta.png",
+      "CP09_3_nueva_corta.png",
+      "CP09_4_cambio_exitoso.png",
+      "CP09_5_login_con_nueva.png"
+    ]
+  },
+  "CP10": {
+    "fecha": "25/11/2026 17:13",
+    "estado": "Aprobado",
+    "obtenido": "Dos devoluciones de 1 unidad quedaron ligadas a la venta N° 2 (APROBADA, REEMBOLSO) y repusieron el stock 1 → 2 → 3. El exceso de 3 unidades se rechazó (\"La cantidad a devolver debe estar entre 1 y 2\") y la venta 9999 se informó como \"Comprobante no encontrado\", sin cambios de stock.",
+    "observaciones": "Precondición: venta N° 2 con 2 Taladro Bosch; stock antes de la devolución: 1. Devolución 1: mensaje \"Operación registrada correctamente\"; stock 1 → 2. Devolución restante: mensaje \"Operación registrada correctamente\"; stock 2 → 3. Exceso (3 de 2): mensaje \"La cantidad a devolver debe estar entre 1 y 2\"; devoluciones de la venta 2 → 2; stock 3 → 3. Venta 9999: mensaje \"Comprobante no encontrado\"; stock 3 → 3. BD: devoluciones ligadas a la venta N° 2: N° 1 (APROBADA, REEMBOLSO, 1 u.); N° 2 (APROBADA, REEMBOLSO, 1 u.). Stock en pantalla: 3.",
+    "capturas": [
+      "CP10_0_precondicion_venta_2_taladros.png",
+      "CP10_2_devolucion_1_formulario.png",
+      "CP10_2_devolucion_1_resultado.png",
+      "CP10_3_devolucion_restante_formulario.png",
+      "CP10_3_devolucion_restante_resultado.png",
+      "CP10_4_exceso_3_formulario.png",
+      "CP10_4_exceso_3_resultado.png",
+      "CP10_5_venta_9999.png",
+      "CP10_6_stock_final.png"
+    ]
+  },
+  "CP11": {
+    "fecha": "25/11/2026 17:13",
+    "estado": "Aprobado",
+    "obtenido": "Con 6 unidades se mostró \"No hay suficiente stock para \"Pintura Latex\". Stock disponible: 5\", la venta no se guardó y el stock siguió en 5. Con 5 unidades la venta N° 3 se registró; el stock quedó en 0 con estado Agotado.",
+    "observaciones": "Stock inicial: 5. Cantidad 6: mensaje \"No hay suficiente stock para \"Pintura Latex\". Stock disponible: 5\"; venta no guardada; stock 5. Cantidad 5: venta N° 3 con 5 unidades, total 50.00. Final: stock en BD 0; en pantalla stock 0 y estado \"Agotado\".",
+    "capturas": [
+      "CP11_1_nueva_venta.png",
+      "CP11_2a_cantidad_6.png",
+      "CP11_2b_intento_confirmar_6.png",
+      "CP11_4a_cantidad_5.png",
+      "CP11_4b_venta_confirmada.png",
+      "CP11_5_stock_y_estado.png"
+    ]
+  },
+  "CP12": {
+    "fecha": "25/11/2026 17:13",
+    "estado": "Aprobado",
+    "obtenido": "Clave incorrecta y usuario inexistente mostraron el mismo mensaje genérico \"Usuario o contraseña incorrectos\". Al 5° intento fallido: \"Cuenta bloqueada por 15 minutos tras 5 intentos fallidos\" (bloqueo de ~15 min registrado en BD). Con la contraseña correcta: \"Cuenta bloqueada por intentos fallidos. Intente nuevamente en 15 minuto(s)\", sin acceso.",
+    "observaciones": "Precondición: Almacenero con 0 intentos fallidos y bloqueadoHasta NULL. Intento 1 (Almacenero/xyz): \"Usuario o contraseña incorrectos\"; BD intentos 1. Usuario inexistente: \"Usuario o contraseña incorrectos\" (mismo texto que con clave incorrecta: sí). Intentos 2 a 5 con Almacenero: 2° \"Usuario o contraseña incorrectos\"; 3° \"Usuario o contraseña incorrectos\"; 4° \"Usuario o contraseña incorrectos\"; 5° \"Cuenta bloqueada por 15 minutos tras 5 intentos fallidos\". BD tras el 5° intento: intentos 0, bloqueadoHasta 25/11/2026, 5:28:40 p. m.. Clave correcta durante el bloqueo: \"Cuenta bloqueada por intentos fallidos. Intente nuevamente en 15 minuto(s)\"; no entró al sistema.",
+    "capturas": [
+      "CP12_1_clave_incorrecta.png",
+      "CP12_2_usuario_inexistente.png",
+      "CP12_3_quinto_intento_bloqueo.png",
+      "CP12_4_clave_correcta_bloqueada.png"
+    ]
+  },
+  "CP16": {
+    "fecha": "25/11/2026 17:14",
+    "estado": "Aprobado",
+    "obtenido": "El usuario Gerente activó el modo oscuro y lo conservó al volver a iniciar sesión (dark); el usuario AsistenteCompra, en el mismo navegador, siguió con su propio modo (light). Contraste medido en modo oscuro: Título de la página 4.5:1, Encabezado de la tabla 15.43:1, Celda de la tabla 15.43:1.",
+    "observaciones": "Usuario A (Gerente): tema inicial light; tras pulsar \"Modo oscuro\" dark (botón cambia a \"Modo claro\": sí); preferencias guardadas: {\"tema_usuario_2\":\"oscuro\"}. Usuario A tras cerrar sesión y volver a entrar: dark. Usuario B (AsistenteCompra) en el mismo navegador: light; preferencias guardadas: {\"tema_usuario_2\":\"oscuro\"}. Contraste en modo oscuro (mínimo WCAG AA 4.5:1): Título de la página 4.5:1; Encabezado de la tabla 15.43:1; Celda de la tabla 15.43:1.",
+    "capturas": [
+      "CP16_1_usuarioA_inicial.png",
+      "CP16_2_usuarioA_modo_oscuro.png",
+      "CP16_4_usuarioA_vuelve_a_entrar.png",
+      "CP16_5_usuarioB_mismo_navegador.png"
+    ]
+  },
+  "CP14": {
+    "fecha": "25/11/2026 17:13",
+    "estado": "Aprobado",
+    "obtenido": "La lista de órdenes mostró \"Entrega de la orden N° 1 registrada correctamente. El stock fue actualizado.\" sin ventana emergente; la orden N° 1 quedó ENTREGADA y el stock aumentó en la cantidad entregada (Cemento Sol Tipo I 30 → 130).",
+    "observaciones": "Orden N° 1 (cotización N° 1) en estado APROBADA antes de la entrega; después: ENTREGADA. Mensaje en la página: \"Entrega de la orden N° 1 registrada correctamente. El stock fue actualizado.\". Ventanas emergentes (alert): ninguna. Stock: Cemento Sol Tipo I 30 + 100 → 130.",
+    "capturas": [
+      "CP14_2_lista_ordenes.png",
+      "CP14_3_formulario_entrega.png",
+      "CP14_4_mensaje_en_pagina.png",
+      "CP14_5_stock_despues.png"
+    ]
+  },
+  "CP13": {
+    "fecha": "25/11/2026 17:13",
+    "estado": "Aprobado",
+    "obtenido": "Con Taladro Bosch INACTIVO: no se ofreció en la venta ni en el cambio; la API rechazó la venta (HTTP 400: \"El producto \"Taladro Bosch\" está inactivo y no se puede vender\") y el cambio (HTTP 400: \"El producto \"Taladro Bosch\" está inactivo y no se puede entregar en un cambio\") sin modificar el stock (3). Reactivado (ACTIVO), la venta se registró y el stock pasó de 3 a 2.",
+    "observaciones": "Precondición: estado de Taladro Bosch ACTIVO → INACTIVO (desde Productos > Editar, rol Gerente); stock 3. Paso 2: sugerencias al buscar \"Taladro\": ninguna. Paso 3: POST /api/ventas con Taladro Bosch → HTTP 400 \"El producto \"Taladro Bosch\" está inactivo y no se puede vender\"; stock 3 → 3. Paso 4: venta N° 4 de 1 Martillo Stanley; productos ofrecidos para el cambio: Cemento Sol Tipo I. POST /api/devoluciones con cambio por Taladro Bosch → HTTP 400 \"El producto \"Taladro Bosch\" está inactivo y no se puede entregar en un cambio\"; stock Taladro 3 → 3, stock Martillo 17 → 17; devoluciones de la venta: 0. Paso 5: estado ACTIVO; venta de 1 Taladro Bosch sin mensajes de error; stock 3 → 2.",
+    "capturas": [
+      "CP13_0_producto_inactivo.png",
+      "CP13_2_busqueda_sin_sugerencia.png",
+      "CP13_4_cambio_sin_producto_inactivo.png",
+      "CP13_5a_producto_reactivado.png",
+      "CP13_5b_taladro_agregado.png",
+      "CP13_5c_venta_registrada.png"
+    ]
+  },
+  "CP15": {
+    "fecha": "25/11/2026 17:13",
+    "estado": "Aprobado",
+    "obtenido": "Cambio N° 3 (tipo CAMBIO) ligado a la venta N° 6: Martillo Stanley 16 → 17 (+1) y Taladro Bosch 2 → 1 (-1). Mensaje: \"Operación registrada correctamente\".",
+    "observaciones": "Precondición: venta N° 6 con 1 Martillo Stanley; stock A (Martillo) 16, B (Taladro) 2. Resumen en pantalla: Producto a devolver (1 x S/. 14.00): S/. 14.00 Producto nuevo (1 x S/. 15.00): S/. 15.00 Diferencia: +S/. 1.00 El cliente debe pagar S/. 1.00 por la diferencia. Mensaje: \"Operación registrada correctamente\". BD: devolución N° 3 ligada a la venta N° 6, tipo CAMBIO, estado APROBADA, devuelto 1 u., producto de cambio id 1 x 1. Stock A 16 → 17; stock B 2 → 1.",
+    "capturas": [
+      "CP15_0_precondicion_venta.png",
+      "CP15_1_venta_y_producto_A.png",
+      "CP15_2_tipo_cambio.png",
+      "CP15_3_producto_B_y_diferencia.png",
+      "CP15_4_cambio_registrado.png",
+      "CP15_5_stock_A_y_B.png"
+    ]
+  }
+}
